@@ -1,4 +1,4 @@
-﻿namespace ASP_NET_Core_Identity_at_Identityserver4
+﻿namespace ASP_NET_Core_Identity_at_HardWork
 {
     public static class IdentityConstants
     {

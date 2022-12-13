@@ -8,18 +8,11 @@ using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Linq;
 
-namespace ASP_NET_Core_Identity_at_Identityserver4
+namespace ASP_NET_Core_Identity_at_HardWork
 {
-    /// <summary>
-    /// Головний клас 
-    /// </summary>
     public class Program
     {
-        /// <summary>
-        /// Головний метод застосунку, з якого починається робота програми
-        /// </summary>
-        /// <param name="args">Параметри які можуть вплинути на роботу застосунку в ході запуску</param>
-        /// <returns></returns>
+
         public static int Main(string[] args)
         {
             AddAndConfiguredLogger();
@@ -57,29 +50,22 @@ namespace ASP_NET_Core_Identity_at_Identityserver4
             }
         }
 
-        /// <summary>
-        /// Метод необхідний для налаштування Логування даних в проекті, і формат логів при виводі в консоль
-        /// </summary>
         private static void AddAndConfiguredLogger()
         {
             AnsiConsoleTheme theme = AnsiConsoleTheme.Code;
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                //.MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-                .MinimumLevel.Override("System", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Fatal)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Fatal)
+                .MinimumLevel.Override("System", LogEventLevel.Fatal)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Fatal)
                 .Enrich.FromLogContext()
 
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: theme)
                 .CreateLogger();
         }
 
-        /// <summary>
-        /// Метод в якому відбувається заповнення бази данних початковими даними
-        /// </summary>
-        /// <param name="host">Параметрт необхідний для витягування сервісу <see cref="IConfiguration"/></param>
         private static void SeedingDataAtBD(IHost host)
         {
             var timeStart = DateTime.UtcNow;
@@ -91,12 +77,6 @@ namespace ASP_NET_Core_Identity_at_Identityserver4
             Log.Information("База данних заповнена.\t{timeFinish}", timeFinish);
         }
 
-        /// <summary>
-        /// Метод в якому відбувається створення конфігурування <see cref="IHostBuilder"/> 
-        /// </summary>
-        /// <param name="args">Вхідні параметри аргументів в яких можна додати додаткові налаштування для конфігурування
-        /// які будуть використовуватись при запуску застосунку</param>
-        /// <returns>Буде повернуто зконфігурований <see cref="IHostBuilder"/></returns>
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseSerilog()

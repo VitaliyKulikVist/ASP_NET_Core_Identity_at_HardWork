@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ASP_NET_Core_Identity_at_Identityserver4.Data.Migrations
+namespace ASP_NET_Core_Identity_at_HardWork.Data.Migrations
 {
     public partial class newTestMigration : Migration
     {

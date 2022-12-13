@@ -1,5 +1,5 @@
-﻿using ASP_NET_Core_Identity_at_Identityserver4.Data;
-using ASP_NET_Core_Identity_at_Identityserver4.Models;
+﻿using ASP_NET_Core_Identity_at_HardWork.Data;
+using ASP_NET_Core_Identity_at_HardWork.Models;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 
-namespace ASP_NET_Core_Identity_at_Identityserver4
+namespace ASP_NET_Core_Identity_at_HardWork
 {
     /// <summary>
     /// Клас необхідний для звязку з БД а також заповненням її початковими\тестовими даними
@@ -17,7 +17,7 @@ namespace ASP_NET_Core_Identity_at_Identityserver4
     public class SeedData
     {
         /// <summary>
-        /// Метод в якому відбувається з'єднання з <paramref name="UseSqlite"/> Базою данних а також створення нових записів авторазиції в таблиці
+        /// Метод в якому відбувається з'єднання з <paramref name="UseMySql"/> Базою данних а також створення нових записів авторазиції в таблиці
         /// </summary>
         /// <param name="connectionString"></param>
         /// <exception cref="Exception">Якщо <paramref name="result.Succeeded"/> == false </exception>
@@ -26,7 +26,7 @@ namespace ASP_NET_Core_Identity_at_Identityserver4
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlite(connectionString));
+               options.UseMySql(connectionString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

@@ -1,8 +1,8 @@
-﻿using ASP_NET_Core_Identity_at_Identityserver4.Models;
+﻿using ASP_NET_Core_Identity_at_HardWork.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace ASP_NET_Core_Identity_at_Identityserver4.Data
+namespace ASP_NET_Core_Identity_at_HardWork.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

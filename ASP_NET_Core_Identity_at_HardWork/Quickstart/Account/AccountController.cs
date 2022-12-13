@@ -1,4 +1,4 @@
-﻿using ASP_NET_Core_Identity_at_Identityserver4.Models;
+﻿using ASP_NET_Core_Identity_at_HardWork.Models;
 using IdentityModel;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
