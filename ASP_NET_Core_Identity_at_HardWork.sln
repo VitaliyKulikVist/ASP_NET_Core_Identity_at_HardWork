@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP_NET_Core_Identity_at_HardWork", "ASP_NET_Core_Identity_at_HardWork\ASP_NET_Core_Identity_at_HardWork.csproj", "{E579814A-164E-4303-A282-F4C7886A51AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{C6E1DF6C-9E62-4630-A012-4F507DF805FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{089D13E9-4655-4859-8A2C-76ACC2E8A79A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{31513A34-444B-4525-B8F3-80EFA2D8A561}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E579814A-164E-4303-A282-F4C7886A51AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E579814A-164E-4303-A282-F4C7886A51AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E579814A-164E-4303-A282-F4C7886A51AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E579814A-164E-4303-A282-F4C7886A51AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6E1DF6C-9E62-4630-A012-4F507DF805FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6E1DF6C-9E62-4630-A012-4F507DF805FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6E1DF6C-9E62-4630-A012-4F507DF805FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6E1DF6C-9E62-4630-A012-4F507DF805FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{089D13E9-4655-4859-8A2C-76ACC2E8A79A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{089D13E9-4655-4859-8A2C-76ACC2E8A79A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{089D13E9-4655-4859-8A2C-76ACC2E8A79A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{089D13E9-4655-4859-8A2C-76ACC2E8A79A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31513A34-444B-4525-B8F3-80EFA2D8A561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31513A34-444B-4525-B8F3-80EFA2D8A561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31513A34-444B-4525-B8F3-80EFA2D8A561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31513A34-444B-4525-B8F3-80EFA2D8A561}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

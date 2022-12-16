@@ -3,6 +3,7 @@ using ASP_NET_Core_Identity_at_HardWork.Models;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
@@ -21,12 +22,12 @@ namespace ASP_NET_Core_Identity_at_HardWork
         /// </summary>
         /// <param name="connectionString"></param>
         /// <exception cref="Exception">Якщо <paramref name="result.Succeeded"/> == false </exception>
-        public static void EnsureSeedData(string connectionString)
+        public static void EnsureSeedData(string connectionString, Action<MySqlDbContextOptionsBuilder> mySqlDbContextOptionsBuilderAction = null)
         {
             var services = new ServiceCollection();
             services.AddLogging();
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseMySql(connectionString));
+               options.UseMySql(connectionString, mySqlDbContextOptionsBuilderAction));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

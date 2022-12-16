@@ -1,0 +1,32 @@
+{
+  "AdditionalData": {},
+  "Alg": "RS256",
+  "Crv": null,
+  "D": "WqYHskLyf_BKK90jq3lIkilbUSz8b5H_H-hfj-ligSOJJ4efP9sNm212tohDJmT2FE2IWZJQbdY2LUHV7C-WuKRB7IrqTfWs8NL2a1tZqJsHlTMjX5ytcQs_GTsDndBlMaR33oXSkGejy5kQbScqAIwmtu2ayxH1xPWlbgMwBVJQwpIw8I-5yQjK9Xvdr1G5s0PyLO5wBiwVNAIdNrAQOat7kl982I2vNI8rw0POf_BEiVJhcS6e3AAJTRR_NJAyP9auMrUyxvI1kwPjAs9meBayyqzvwJFAVTavgWau05V8Aew2gXmpqw0KFAEg1QL2Pq2q1nuOgEoCFbMqC8C0CQ",
+  "DP": "SAEjNYoAuqkKHUxsquoBO-r9AmWMlPVQTbM-TuCOOIa_D9BWCA5159JtgWp4e53oyEWiOqEv24HjHCNO75M1aLu-2sRU5iSyjaN4homcIrper6Bj4aGNrwJW8dBrdC_Iz1GUhaapu41Ssbsqkn14fqDk0mjiP6EFf6gX87QfDds",
+  "DQ": "sjyQOvcHanw7TK0-iaLjNglc3a5Owx_Y1jPJqAIJYKlrzDDTR0ZJTCY6UjRPNPBsV1WJrNjSVAfTU3tte91iVAPcmhIoOzk0AtZ3QWzdltfvIuZGf7dYNY7o_stp71DNE1SMLfTzmA0Zg2m_5DjKgLw8K-G7Ali9wjfQEgEip00",
+  "E": "AQAB",
+  "K": null,
+  "KeyId": "36C1611DA7EF94C3E6F0D839D59572D2",
+  "Kid": "36C1611DA7EF94C3E6F0D839D59572D2",
+  "Kty": "RSA",
+  "N": "6q-La6Yp-lMRswNVIyRjD6d3N5qvKZbFdxCuWcW7s8TNNAJAwhyS5_EipaPocYJccgexRYDMhsWl8tpunbJm89V4dCVdrN8AFgE_EVn-3e0cYRy02RDHKYfmUV7EZwf6rlL7cF9Q00MhyjUncVzEl-szQ3TxlfFTDp4R4FUXSQbPkANE09C7Aw7RNQaC2PNp1KISR0pB8csMGLd95DyRrnYM6faw6G3osyJWYt6fTCIaiYBRqOxQ-NctHRZQGWjtSzM_ZIfnYhqLyITyMjQUeeKZ7HuUMEB6lrwb4f3A-4OWM83lT0b0OakA2mL0q1zwMbd23AYnrYAhdaopTwSSAQ",
+  "Oth": null,
+  "P": "-doeXuxx3XXkaHTrPUnAPVKZUV-_THVX1P_nvUwmPN804gX2OBgnOt7ulKLXBsvH3E26JQyuC-ygL11IG3aEv_-rSudQJyqcUA1QAtkmIgBDXWPf_CuG8M5Sp_u76VOvJmeUbDTaeJfkjaP4bpqIRrfQ4DYQPrgp-SnBZ0xck1c",
+  "Q": "8HXjutr3H3r6B1wPgjR-D27nbULghnrZ43YudUjjwdSJV2jQpTq4T5f8VZ4io-Qjv-LUz2SukFe6wAx78ZjDoAlc0AxSk1_Ve5zaYg_-gHdtAamEpzu_3B44avA_NfJCGyNLh8-Ge2HJFzGw9laxefLksS7oFfFEF4MNgtCwxmc",
+  "QI": "2bvBojzX9oPoaAC7dLrbaGmnQkTR6QVGavqE9qckm18ZwHdTKYX0CeA-M2jWwZeO8yg2ViiKtFN7KkXuHm4VqyNLz70PdWrnyDDVotnT_1B0LrpE2uGslA2U8SwrTEaqVw16KetHlfpNdqUk7gzK9UlLgW5qMCm5XhBUZYpJuDM",
+  "Use": null,
+  "X": null,
+  "X5t": null,
+  "X5tS256": null,
+  "X5u": null,
+  "Y": null,
+  "KeySize": 2048,
+  "HasPrivateKey": true,
+  "CryptoProviderFactory": {
+    "CryptoProviderCache": {},
+    "CustomCryptoProvider": null,
+    "CacheSignatureProviders": true,
+    "SignatureProviderObjectPoolCacheSize": 48
+  }
+}

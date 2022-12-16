@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -70,26 +69,12 @@ namespace ASP_NET_Core_Identity_at_HardWork
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    /* Authority
-                    /// <summary>
-                    /// базова адреса вашого сервера ідентифікації
-                    /// </summary>
-                    /// <remarks>
-                    /// Отримує або встановлює Authority для використання під час здійснення викликів OpenIdConnect.
-                    /// </remarks>
-                    options.Authority = "https://demo.identityserver.io";
-                    */
-                    /* Audience
-                    /// <summary>
-                    /// якщо ви використовуєте ресурси API, ви можете вказати назву тут
-                    /// </summary>
-                    /// <remarks>
-                    /// Отримує або встановлює одне дійсне значення аудиторії для 
-                    /// будь-якого отриманого маркера OpenIdConnect. 
-                    /// Це значення передається в TokenValidationParameters.ValidAudience, якщо ця властивість порожня.
-                    /// </remarks>
-                    options.Audience = IdentityConstants.ApiScope_Level1;
-                    */
+                    // базова адреса сервера ідентифікації
+                    //options.Authority = "https://demo.identityserver.io";
+
+                    // якщо використовуюьться ресурси API, ви можете вказати назву тут
+                    //options.Audience = IdentityConstants.ApiScope_Level1;
+
 
                     options.Authority = Configuration["Authority"];
                     options.Events = new JwtBearerEvents
@@ -146,14 +131,22 @@ namespace ASP_NET_Core_Identity_at_HardWork
                     options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
                 });
 
-            
+            /* Перевірка дійсності токена
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "SignalR.API");
+                });
+            });
+            */
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = new PathString("/Account/Login");
                 });
-
-            //services.AddControllersWithViews();
         }
 
         public void Configure(IApplicationBuilder app)

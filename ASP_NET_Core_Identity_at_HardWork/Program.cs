@@ -31,6 +31,8 @@ namespace ASP_NET_Core_Identity_at_HardWork
                 {
                     SeedingDataAtBD(host);
 
+                    Console.ReadKey();
+
                     return 0;
                 }
 
