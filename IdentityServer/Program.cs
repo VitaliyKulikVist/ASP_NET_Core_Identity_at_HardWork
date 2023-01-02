@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
@@ -28,16 +26,13 @@ namespace IdentityServer
 
                 if (seed)
                 {
-                    SeedingDataAtBD(host, "DefaultConnectionSqlite");
-
-                    Console.ReadKey();
+                    SeedingDataAtBD(host, "server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;");
 
                     return 0;
                 }
 
                 Log.Information("Початок роботи Хоста IdentityServer...");
                 host.Run();
-
                 return 0;
             }
             catch (Exception ex)
@@ -70,7 +65,6 @@ namespace IdentityServer
         {
             var timeStart = DateTime.UtcNow;
             Log.Information("Заповнення бази данних...\t{timeStart}", timeStart);
-            var config = host.Services.GetRequiredService<IConfiguration>();
             SeedData.EnsureSeedData(connectionString);
             var timeFinish = DateTime.UtcNow;
             Log.Information("База данних заповнена.\t{timeFinish}", timeFinish);
