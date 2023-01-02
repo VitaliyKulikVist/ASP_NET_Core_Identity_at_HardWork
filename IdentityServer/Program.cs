@@ -1,3 +1,4 @@
+using IdentityServer.MenegmentData;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -22,11 +23,25 @@ namespace IdentityServer
                     args = args.Except(new[] { "/seed" }).ToArray();
                 }
 
+                var delete = args.Contains("/delete");
+                if (delete)
+                {
+                    args = args.Except(new[] { "/delete" }).ToArray();
+                }
+
                 var host = CreateHostBuilder(args).Build();
 
                 if (seed)
                 {
-                    SeedingDataAtBD(host, "server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;");
+                    SeedingDataAtBD("server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;");
+
+                    return 0;
+                }
+
+                else
+                if(delete)
+                {
+                    DeletingDataAtBD("server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;");
 
                     return 0;
                 }
@@ -61,13 +76,22 @@ namespace IdentityServer
                 .CreateLogger();
         }
 
-        private static void SeedingDataAtBD(IHost host, string connectionString)
+        private static void SeedingDataAtBD(string connectionString)
         {
             var timeStart = DateTime.UtcNow;
             Log.Information("Заповнення бази данних...\t{timeStart}", timeStart);
             SeedData.EnsureSeedData(connectionString);
             var timeFinish = DateTime.UtcNow;
             Log.Information("База данних заповнена.\t{timeFinish}", timeFinish);
+        }
+
+        private static void DeletingDataAtBD(string connectionString)
+        {
+            var timeStart = DateTime.UtcNow;
+            Log.Information("Видалення данних з бд...\t{timeStart}", timeStart);
+            DeleteData.DeleteAllUsers(connectionString);
+            var timeFinish = DateTime.UtcNow;
+            Log.Information("Данні видалено.\t{timeFinish}", timeFinish);
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
