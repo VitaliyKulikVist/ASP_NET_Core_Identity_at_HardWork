@@ -11,41 +11,21 @@ namespace IdentityServer
 {
     public class Program
     {
-        private static readonly string ConnectionMySQLstring = "server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;";
         public static int Main(string[] args)
         {
             AddAndConfiguredLogger();
 
+            bool haveArgs = args.Length > 0;
+
             try
             {
-                var seed = args.Contains("/seed");
-                if (seed)
+                if(haveArgs)
                 {
-                    args = args.Except(new[] { "/seed" }).ToArray();
-                }
-
-                var delete = args.Contains("/delete");
-                if (delete)
-                {
-                    args = args.Except(new[] { "/delete" }).ToArray();
+                    return ControllArgs(args);
                 }
 
                 var host = CreateHostBuilder(args).Build();
 
-                if (seed)
-                {
-                    SeedingDataAtBD(ConnectionMySQLstring);
-
-                    return 0;
-                }
-
-                else
-                if(delete)
-                {
-                    DeletingDataAtBD(ConnectionMySQLstring);
-
-                    return 0;
-                }
 
                 Log.Information("Початок роботи Хоста IdentityServer...");
                 host.Run();
@@ -53,7 +33,7 @@ namespace IdentityServer
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Host terminated unexpectedly.");
+                Log.Fatal(ex, "Помилка роботи хоста");
                 return 1;
             }
             finally
@@ -89,10 +69,42 @@ namespace IdentityServer
         private static void DeletingDataAtBD(string connectionString)
         {
             var timeStart = DateTime.UtcNow;
-            Log.Information("Видалення данних з бд...\t{timeStart}", timeStart);
+            Log.Information("Видалення данних з бази данних...\t{timeStart}", timeStart);
             DeleteData.DeleteAllUsers(connectionString);
             var timeFinish = DateTime.UtcNow;
             Log.Information("Данні видалено.\t{timeFinish}", timeFinish);
+        }
+
+        private static int ControllArgs(string[] args)
+        {
+            var seed = args.Contains(ConstantIdentityServer.CommandSeeding);
+            if (seed)
+            {
+                args = args.Except(new[] { ConstantIdentityServer.CommandSeeding }).ToArray();
+            }
+
+            var delete = args.Contains(ConstantIdentityServer.CommandDeleting);
+            if (delete)
+            {
+                args = args.Except(new[] { ConstantIdentityServer.CommandDeleting }).ToArray();
+            }
+
+            if (seed)
+            {
+                SeedingDataAtBD(ConstantIdentityServer.ConnectionMySQL);
+
+                return 0;
+            }
+
+            else
+            if (delete)
+            {
+                DeletingDataAtBD(ConstantIdentityServer.ConnectionMySQL);
+
+                return 0;
+            }
+
+            return 0;
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
