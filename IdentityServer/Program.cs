@@ -11,6 +11,7 @@ namespace IdentityServer
 {
     public class Program
     {
+        private static readonly string ConnectionMySQLstring = "server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;";
         public static int Main(string[] args)
         {
             AddAndConfiguredLogger();
@@ -33,7 +34,7 @@ namespace IdentityServer
 
                 if (seed)
                 {
-                    SeedingDataAtBD("server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;");
+                    SeedingDataAtBD(ConnectionMySQLstring);
 
                     return 0;
                 }
@@ -41,7 +42,7 @@ namespace IdentityServer
                 else
                 if(delete)
                 {
-                    DeletingDataAtBD("server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;");
+                    DeletingDataAtBD(ConnectionMySQLstring);
 
                     return 0;
                 }

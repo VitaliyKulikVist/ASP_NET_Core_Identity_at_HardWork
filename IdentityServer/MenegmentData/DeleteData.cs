@@ -3,6 +3,7 @@ using IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System;
 using System.Linq;
 
@@ -46,8 +47,33 @@ namespace IdentityServer.MenegmentData
                             {
                                 throw new Exception(result.Errors.First().Description);
                             }
+
+                            else
+                            {
+                                Log.Debug($"deleted");
+                            }
+                        }
+                        else
+                        {
+                            Log.Debug($"Не знайшло що видаляти");
                         }
                     }
+
+                    if(userMgr.Users.Count() > 0)
+                    {
+                        Log.Debug($"Є ще користувачі які потрібно видалити які не входять в список");
+
+                        foreach (var user in userMgr.Users)
+                        {
+                            var result = userMgr.DeleteAsync(user).Result;
+                            if (!result.Succeeded)
+                            {
+                                throw new Exception(result.Errors.First().Description);
+                            }
+                        }
+                    }
+
+                    
                 }
             }
         }
