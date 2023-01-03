@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IdentityServer
+namespace IdentityServer_DAL_MySQL.MenegmentData
 {
     public class UsersData
     {

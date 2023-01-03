@@ -1,8 +1,8 @@
-﻿using IdentityServer.Models;
+﻿using IdentityServer_DAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace IdentityServer.Data
+namespace IdentityServer_DAL.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

@@ -1,7 +1,7 @@
-﻿using IdentityServer.Entity;
+﻿using IdentityServer_DAL.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace IdentityServer.Data
+namespace IdentityServer_DAL.Data
 {
     public class UserContext : DbContext
     {

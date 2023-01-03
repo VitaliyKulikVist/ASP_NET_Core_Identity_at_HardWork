@@ -1,20 +1,16 @@
-﻿using IdentityServer.Data;
-using IdentityServer.Models;
-using IdentityModel;
+﻿using IdentityServer_DAL.Data;
+using IdentityServer_DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 using System;
 using System.Linq;
-using System.Security.Claims;
 
-namespace IdentityServer
+namespace IdentityServer_DAL_MySQL.MenegmentData
 {
-    public class SeedData
+    public class DeleteData
     {
-        public static void EnsureSeedData(string connectionString)
+        public static void DeleteAllUsers(string connectionString)
         {
             var services = new ServiceCollection();
             services.AddLogging();
@@ -43,38 +39,40 @@ namespace IdentityServer
                     foreach (var user in UsersData.UsersDictionary)
                     {
                         var unit = userMgr.FindByNameAsync(user.Key).Result;
-                        if (unit == null)
+                        if (unit != null)
                         {
-                            unit = new ApplicationUser
-                            {
-                                UserName = user.Key,
-                                Email = $"{user.Key}Smith@email.com",
-                                Description = $"Опис користувача {user.Key}",
-                                EmailConfirmed = true,
-                            };
-                            var result = userMgr.CreateAsync(unit, user.Value).Result;
+                            var result = userMgr.DeleteAsync(unit).Result;
                             if (!result.Succeeded)
                             {
                                 throw new Exception(result.Errors.First().Description);
                             }
 
-                            result = userMgr.AddClaimsAsync(unit, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, $"{user.Key} Smith"),
-                            new Claim(JwtClaimTypes.GivenName, user.Key),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, $"http://{user.Key}.com"),
-                        }).Result;
+                            else
+                            {
+                                Console.WriteLine("deleted");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Не знайшло що видаляти");
+                        }
+                    }
+
+                    if(userMgr.Users.Count() > 0)
+                    {
+                        Console.WriteLine("Є ще користувачі які потрібно видалити які не входять в список");
+
+                        foreach (var user in userMgr.Users)
+                        {
+                            var result = userMgr.DeleteAsync(user).Result;
                             if (!result.Succeeded)
                             {
                                 throw new Exception(result.Errors.First().Description);
                             }
-                            Log.Debug($"{user.Key} created");
-                        }
-                        else
-                        {
-                            Log.Debug($"{user.Key} already exists");
                         }
                     }
+
+                    
                 }
             }
         }

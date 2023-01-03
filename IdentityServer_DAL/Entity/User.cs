@@ -1,4 +1,4 @@
-﻿namespace IdentityServer.Entity
+﻿namespace IdentityServer_DAL.Entity
 {
     public class User
     {

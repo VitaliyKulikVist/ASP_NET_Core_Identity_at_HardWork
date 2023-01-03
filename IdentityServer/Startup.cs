@@ -1,6 +1,6 @@
-﻿using IdentityServer.Data;
-using IdentityServer.Models;
-using IdentityServer.Resources;
+﻿using IdentityServer.Resources;
+using IdentityServer_DAL.Data;
+using IdentityServer_DAL.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
