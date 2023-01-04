@@ -7,18 +7,16 @@
 
   <ItemGroup>
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\IdentityServer_Common\IdentityServer_Common.csproj" />
-    <ProjectReference Include="..\IdentityServer_DAL\IdentityServer_DAL.csproj" />
+    <ProjectReference Include="..\IdentityServer_DAL_MySQL\IdentityServer_DAL_MySQL.csproj" />
   </ItemGroup>
 
 </Project>

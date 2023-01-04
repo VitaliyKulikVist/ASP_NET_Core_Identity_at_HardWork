@@ -8,21 +8,11 @@ namespace Client
 {
     public class Program
     {
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            try
-            {
-                _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async();
+            _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async();
 
-                Console.ReadKey();
-
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Host terminated unexpectedly.\t {ex}", ex);
-                return 1;
-            }
+            Console.ReadKey();
         }
         private static async Task SendRequestAtIdentityServerAtTryGetAccesFromApi1Async()
         {
