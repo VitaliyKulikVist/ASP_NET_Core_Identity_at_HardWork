@@ -25,7 +25,7 @@ namespace API
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Host terminated unexpectedly.");
+                Log.Fatal(ex, "Хост API завершив свою роботу по помилці");
                 return 1;
             }
             finally

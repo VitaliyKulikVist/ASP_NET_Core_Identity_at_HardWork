@@ -29,8 +29,6 @@ namespace IdentityServer
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                //options.UseSqlite(Configuration.GetConnectionString("DefaultConnectionSqlite"));
-
                 var connetionString = Configuration.GetConnectionString("DefaultConnectionMySQL");
                 options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
             });
@@ -42,6 +40,7 @@ namespace IdentityServer
             
             var builder = services.AddIdentityServer(options =>
             {
+                /* Аудити помилок
                 //Чи викликати події помилки.
                 options.Events.RaiseErrorEvents = true;
                 //Чи потрібно викликати інформаційні події.
@@ -50,8 +49,8 @@ namespace IdentityServer
                 options.Events.RaiseFailureEvents = true;
                 //Чи потрібно викликати події успіху.
                 options.Events.RaiseSuccessEvents = true;
+                */
 
-                // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 //Видає претензію aud із форматом видавця/ресурсів. Це потрібно для деяких старих систем перевірки маркерів доступу. За замовчуванням значення false.
                 options.EmitStaticAudienceClaim = true;
             })
@@ -160,7 +159,6 @@ namespace IdentityServer
 
             
             app.UseStaticFiles();
-
             app.UseRouting();
             
             app.UseIdentityServer();

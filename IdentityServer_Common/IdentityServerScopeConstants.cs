@@ -1,6 +1,6 @@
-﻿namespace IdentityServer.Resources
+﻿namespace IdentityServer_Common
 {
-    public static class IdentityConstants
+    public static class IdentityServerScopeConstants
     {
         /// <summary>
         /// Імя для доступу до даних 1-го рівня

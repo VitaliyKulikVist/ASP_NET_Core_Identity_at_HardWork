@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer_DAL_MySQL", "IdentityServer_DAL_MySQL\IdentityServer_DAL_MySQL.csproj", "{DDBC865D-7F49-4654-96FF-76C560705A6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer_DAL", "IdentityServer_DAL\IdentityServer_DAL.csproj", "{892A1502-BD45-44C4-A365-11C0E04A1D22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer_DAL", "IdentityServer_DAL\IdentityServer_DAL.csproj", "{892A1502-BD45-44C4-A365-11C0E04A1D22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer_Common", "IdentityServer_Common\IdentityServer_Common.csproj", "{231E7604-B651-4351-AC72-2D8BF7E278D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{892A1502-BD45-44C4-A365-11C0E04A1D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{892A1502-BD45-44C4-A365-11C0E04A1D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{892A1502-BD45-44C4-A365-11C0E04A1D22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{231E7604-B651-4351-AC72-2D8BF7E278D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{231E7604-B651-4351-AC72-2D8BF7E278D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{231E7604-B651-4351-AC72-2D8BF7E278D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{231E7604-B651-4351-AC72-2D8BF7E278D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

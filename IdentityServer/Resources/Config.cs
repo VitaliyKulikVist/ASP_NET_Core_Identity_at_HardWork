@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using IdentityServer_Common;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -49,12 +50,12 @@ namespace IdentityServer.Resources
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope(IdentityConstants.ApiScope_Level1, $"My {IdentityConstants.ApiScope_Level1}"),
-                new ApiScope(IdentityConstants.ApiScope_Level2, $"My {IdentityConstants.ApiScope_Level2}"),
+                new ApiScope(IdentityServerScopeConstants.ApiScope_Level1, $"My {IdentityServerScopeConstants.ApiScope_Level1}"),
+                new ApiScope(IdentityServerScopeConstants.ApiScope_Level2, $"My {IdentityServerScopeConstants.ApiScope_Level2}"),
 
-                new ApiScope(name: IdentityConstants.ApiScope_Read,   displayName: "Read your data."),
-                new ApiScope(name: IdentityConstants.ApiScope_Write,  displayName: "Write your data."),
-                new ApiScope(name: IdentityConstants.ApiScope_Delete, displayName: "Delete your data.")
+                new ApiScope(name: IdentityServerScopeConstants.ApiScope_Read,   displayName: "Read your data."),
+                new ApiScope(name: IdentityServerScopeConstants.ApiScope_Write,  displayName: "Write your data."),
+                new ApiScope(name: IdentityServerScopeConstants.ApiScope_Delete, displayName: "Delete your data.")
             };
 
         public static IEnumerable<ApiResource> APIResource =>
@@ -63,15 +64,15 @@ namespace IdentityServer.Resources
                 new ApiResource("invoice", "Invoice API")
                 {
                     Scopes = {
-                        IdentityConstants.ApiScope_Read,
-                        IdentityConstants.ApiScope_Write,
-                        IdentityConstants.ApiScope_Delete }
+                        IdentityServerScopeConstants.ApiScope_Read,
+                        IdentityServerScopeConstants.ApiScope_Write,
+                        IdentityServerScopeConstants.ApiScope_Delete }
                 },
 
                 new ApiResource("customer", "Customer API")
                 {
                     Scopes = {
-                        IdentityConstants.ApiScope_Level2 }
+                        IdentityServerScopeConstants.ApiScope_Level2 }
                 },
 
                 new ApiResource
@@ -107,7 +108,7 @@ namespace IdentityServer.Resources
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
 
-                    AllowedScopes = { IdentityConstants.ApiScope_Level1 }
+                    AllowedScopes = { IdentityServerScopeConstants.ApiScope_Level1 }
                 },
 
 
@@ -126,7 +127,7 @@ namespace IdentityServer.Resources
                     AllowedScopes = {
                         "openid",
                         "profile",
-                        IdentityConstants.ApiScope_Level2 }
+                        IdentityServerScopeConstants.ApiScope_Level2 }
                 },
 
                 new Client
@@ -140,9 +141,9 @@ namespace IdentityServer.Resources
 
                     //Області, до яких клієнт має доступ
                     AllowedScopes = {
-                        IdentityConstants.ApiScope_Read,
-                        IdentityConstants.ApiScope_Write,
-                        IdentityConstants.ApiScope_Delete}
+                        IdentityServerScopeConstants.ApiScope_Read,
+                        IdentityServerScopeConstants.ApiScope_Write,
+                        IdentityServerScopeConstants.ApiScope_Delete}
                 }
             };
 

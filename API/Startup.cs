@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using IdentityServer_Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace API
 {
@@ -33,12 +28,11 @@ namespace API
             services.AddSwaggerGen();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+                .AddJwtBearer( options =>
                 {
-                    //options.Authority = "https://localhost:5001";
-
-                    options.Authority = Configuration["Authority"];
+                    options.Authority = "https://localhost:5001";
                     
+                    /* Івенти для дебагу
                     options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
@@ -84,7 +78,8 @@ namespace API
                             return Task.CompletedTask;
                         }
                     };
-                    
+                    */
+
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false
@@ -94,11 +89,14 @@ namespace API
                     options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
                 });
 
+            /* Кукі потім розкоментувати
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = new PathString("/Account/Login");
                 });
+
+            */
         }
 
         public void Configure(IApplicationBuilder app)
@@ -119,7 +117,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers()
-                .RequireAuthorization("Доступ Першого рівня");
+                .RequireAuthorization(IdentityServerScopeConstants.ApiScope_Level1);
             });
         }
     }

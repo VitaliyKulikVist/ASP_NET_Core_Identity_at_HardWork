@@ -1,5 +1,4 @@
 using IdentityServer_DAL_MySQL.MenegmentData;
-using Microsoft.Extensions.Hosting;
 using System;
 
 namespace IdentityServer_DAL_MySQL
