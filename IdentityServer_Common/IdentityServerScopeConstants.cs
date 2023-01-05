@@ -8,7 +8,7 @@
         /// <remarks>
         /// scope1
         /// </remarks>
-        public static string ApiScope_Level1 { get; } = "Доступ Першого рівня";
+        public static string ApiScope_Level1 { get; } = "Acces1Level";
 
         /// <summary>
         /// Імя для доступу до даних 2-го рівня
@@ -16,7 +16,7 @@
         /// <remarks>
         /// scope2
         /// </remarks>
-        public static string ApiScope_Level2 { get; } = "Доступ Другого рівня";
+        public static string ApiScope_Level2 { get; } = "Acces2Level";
 
         /// <summary>
         /// Імя для доступу до даних для читання

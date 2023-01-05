@@ -134,20 +134,7 @@ namespace IdentityServer
                     options.LoginPath = new PathString("/Account/Login");
                 });
             */
-
-            /* Перевірка дійсності токена
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ApiScope", policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "SignalR.API");
-                });
-            });
-            */
         }
-
-
 
         public void Configure(IApplicationBuilder app)
         {
@@ -172,7 +159,7 @@ namespace IdentityServer
 
                 endpoints.MapGet("/Hello", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    await context.Response.WriteAsync("Hello Vitaliy!");
                 });
             });
         }

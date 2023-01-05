@@ -7,6 +7,9 @@ namespace IdentityServer.Resources
 {
     public static class Config
     {
+        /// <summary>
+        /// Ресурси до яких буде мати доступ АРІ
+        /// </summary>
         public static IEnumerable<IdentityResource> IdentityResources =>
                    new IdentityResource[]
                    {
@@ -58,6 +61,9 @@ namespace IdentityServer.Resources
                 new ApiScope(name: IdentityServerScopeConstants.ApiScope_Delete, displayName: "Delete your data.")
             };
 
+        /// <summary>
+        /// Це необхідно для додаткового захисту інформації, якщо їх використовувати то для кожної АРІ прийшлось би створювати свій ТОКЕН
+        /// </summary>
         public static IEnumerable<ApiResource> APIResource =>
             new ApiResource[]
             {
@@ -106,9 +112,10 @@ namespace IdentityServer.Resources
                     ClientName = "Client Credentials Client",
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
+                    ClientSecrets = { new Secret("secret".Sha256()) },
 
-                    AllowedScopes = { IdentityServerScopeConstants.ApiScope_Level1 }
+                    AllowedScopes = { IdentityServerScopeConstants.ApiScope_Level1 },
+                    AllowedCorsOrigins = { "https://localhost:7249" }
                 },
 
 
@@ -146,7 +153,5 @@ namespace IdentityServer.Resources
                         IdentityServerScopeConstants.ApiScope_Delete}
                 }
             };
-
-
     }
 }

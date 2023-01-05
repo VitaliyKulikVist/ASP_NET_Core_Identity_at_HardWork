@@ -16,7 +16,6 @@ namespace Client
         }
         private static async Task SendRequestAtIdentityServerAtTryGetAccesFromApi1Async()
         {
-            // discover endpoints from metadata
             var client = new HttpClient();
 
             var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
@@ -29,14 +28,11 @@ namespace Client
                 return;
             }
 
-            // request token
             var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
             {
                 Address = disco.TokenEndpoint,
                 ClientId = "client",
                 ClientSecret = "secret",
-
-                Scope = "api1"
             });
 
             if (tokenResponse.IsError)
