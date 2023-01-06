@@ -33,9 +33,23 @@ namespace IdentityServer
                 options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
             });
             
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.Password.RequiredLength = 6;//Мінімальна довжина пароля
+                config.Password.RequireDigit = false;//Не обов'язково використовувати ЦИФРИ
+                config.Password.RequireNonAlphanumeric = false;//Не обов'язково використовувати СИМВОЛИ
+                config.Password.RequireUppercase = false;//Не обов'язково використовувати ВЕЛИКІ букви
+
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "Notes.Identity.Test_Cookie_Name";
+                config.LoginPath = new PathString("/Account/Login");
+                config.LogoutPath = new PathString("/Account/Logout");
+            });
 
             
             var builder = services.AddIdentityServer(options =>
