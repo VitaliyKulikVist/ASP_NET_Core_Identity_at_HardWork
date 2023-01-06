@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -17,10 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\IdentityServer_Common\IdentityServer_Common.csproj" />
     <ProjectReference Include="..\IdentityServer_DAL_MySQL\IdentityServer_DAL_MySQL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

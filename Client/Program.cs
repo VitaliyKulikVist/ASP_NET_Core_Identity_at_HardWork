@@ -1,7 +1,9 @@
 using IdentityModel.Client;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Client
@@ -10,11 +12,36 @@ namespace Client
     {
         public static void Main(string[] args)
         {
-            _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async();
+            Start:
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nВиберiть варiант:");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"1: GrantTypes.ClientCredentials");
+            Console.WriteLine($"2: GrantTypes.Code");
+            Console.ResetColor();
 
-            Console.ReadKey();
+            int input = Convert.ToInt32(Console.ReadLine());
+
+            switch (input)
+            {
+                case 1:
+                    _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async("client", "secret");
+                    break;
+                case 2:
+                    _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async("redirectClient", "secret");
+                    break;
+                default:
+                    break;
+            }
+
+            int input2 = Convert.ToInt32(Console.ReadLine());
+            if(input2 == 0)
+            {
+                goto Start;
+            }
         }
-        private static async Task SendRequestAtIdentityServerAtTryGetAccesFromApi1Async()
+        private static async Task SendRequestAtIdentityServerAtTryGetAccesFromApi1Async(string clientID, string clientSecret)
         {
             var client = new HttpClient();
 
@@ -31,8 +58,8 @@ namespace Client
             var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
             {
                 Address = disco.TokenEndpoint,
-                ClientId = "client",
-                ClientSecret = "secret",
+                ClientId = clientID,
+                ClientSecret = clientSecret,
             });
 
             if (tokenResponse.IsError)
@@ -45,7 +72,8 @@ namespace Client
             }
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(tokenResponse.Json);
+            var parserJson = JsonConvert.DeserializeObject(tokenResponse.Json.ToString());
+            Console.WriteLine(parserJson);
             Console.WriteLine("\n\n");
             Console.ResetColor();
 
@@ -55,6 +83,8 @@ namespace Client
 
             Console.WriteLine("\t\tWeatherForecast");
             await Switches2(tokenResponse);
+
+            Console.ResetColor();
         }
 
         private static async Task GetResponseFromURLAsync(string url, IdentityModel.Client.TokenResponse tokenResponse)
@@ -76,6 +106,7 @@ namespace Client
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(JArray.Parse(content));
                 Console.ResetColor();
+                                
             }
         }
 

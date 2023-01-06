@@ -1,7 +1,9 @@
 ﻿using IdentityServer_Common;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -84,6 +86,7 @@ namespace API
 
                             return Task.CompletedTask;
                         },
+                        // Додати поле з токеном у відповідь
                         OnTokenValidated = context =>
                         {
                             var token = context.SecurityToken as JwtSecurityToken;
@@ -115,11 +118,11 @@ namespace API
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateAudience = false
-                        //NameClaimType = "testName",
-                        //RoleClaimType = "testRole"
+                        ValidateAudience = false,
+                        NameClaimType = "TestNameCliaim",
+                        RoleClaimType = "TestRole"
                     };
-                    //options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+                    options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
                 });
 
             services.AddAuthorization(options =>
@@ -130,11 +133,13 @@ namespace API
                 });
             });
 
+            /* Налаштувати роботу Cookie
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = new PathString("/Account/Login");
                 });
+            */
         }
 
         public void Configure(IApplicationBuilder app)
@@ -155,7 +160,6 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //.RequireAuthorization("ApiScope");
             });
         }
     }

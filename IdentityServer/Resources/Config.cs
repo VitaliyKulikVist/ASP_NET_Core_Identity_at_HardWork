@@ -8,7 +8,7 @@ namespace IdentityServer.Resources
     public static class Config
     {
         /// <summary>
-        /// Ресурси до яких буде мати доступ АРІ
+        /// Ресурси до яких буде матиме доступ клієнт
         /// </summary>
         public static IEnumerable<IdentityResource> IdentityResources =>
                    new IdentityResource[]
@@ -50,6 +50,12 @@ namespace IdentityServer.Resources
                         }
                    };
 
+        /// <summary>
+        /// Область: те, що можна використовувати клієнському додатку
+        /// </summary>
+        /// <remarks>
+        /// Доступ на рівні обласі(які представлені у вигляді ресурсів які можуть бути IdentityResource або ApiResource)
+        /// </remarks>
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
@@ -121,8 +127,9 @@ namespace IdentityServer.Resources
 
                 new Client
                 {
-                    ClientId = "interactive",
-                    ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
+                    ClientId = "redirectClient",
+                    ClientName = "This client realization a redirect technology",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
 
@@ -140,7 +147,7 @@ namespace IdentityServer.Resources
                 new Client
                 {
                     ClientId = "test.client",
-                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedGrantTypes = GrantTypes.Implicit,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())

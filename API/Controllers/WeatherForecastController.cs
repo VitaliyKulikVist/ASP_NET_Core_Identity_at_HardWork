@@ -15,12 +15,7 @@ namespace API.Controllers
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-        private static readonly string[] Summaries2 = new[]
-        {
-        "Морозний", "Зміцнюючий", "Холодний", "Прохолодний", "Легкий", "Теплий", "Заспокійливий", "Гарячий", "Духливий", "Спекучий"
-    };
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
 
@@ -30,17 +25,25 @@ namespace API.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IActionResult Get()
+        public IEnumerable<WeatherForecast> Get()
         {
-            //return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            //{
-            //    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            //    TemperatureC = Random.Shared.Next(-20, 55),
-            //    Summary = Summaries2[Random.Shared.Next(Summaries2.Length)]
-            //})
-            //.ToArray();
-
-            return Ok(Enumerable.Empty<WeatherForecast>());
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now,
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            }).ToArray();
         }
+
+        //[HttpGet(Name = "GetWeatherForecastOne")]
+        //public WeatherForecast GetWeatherForecastOne()
+        //{
+        //    return new WeatherForecast
+        //    {
+        //        Date = DateTime.Now,
+        //        TemperatureC = Random.Shared.Next(-20, 55),
+        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        //    };
+        //}
     }
 }
