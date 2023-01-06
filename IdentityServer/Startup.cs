@@ -46,7 +46,7 @@ namespace IdentityServer
 
             services.ConfigureApplicationCookie(config =>
             {
-                config.Cookie.Name = "Notes.Identity.Test_Cookie_Name";
+                config.Cookie.Name = "Identity.Test_Cookie_Name";
                 config.LoginPath = new PathString("/Account/Login");
                 config.LogoutPath = new PathString("/Account/Logout");
             });
