@@ -1,4 +1,6 @@
-﻿using IdentityServer_DAL.Models;
+﻿using IdentityServer_DAL.Configurations;
+using IdentityServer_DAL.Entity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,43 @@ namespace IdentityServer_DAL.Data
             // Налаштуйте модель ASP.NET Identity і замініть значення за замовчуванням, якщо потрібно.
             // Наприклад, ви можете перейменувати імена таблиць ASP.NET Identity тощо.
             // Додайте свої налаштування після виклику base.OnModelCreating(builder);
+
+            builder.Entity<ApplicationUser>(entity =>
+            {
+                entity.ToTable(name: "Users");
+            });
+
+            builder.Entity<IdentityRole>(entity =>
+            {
+                entity.ToTable(name: "Roles");
+            });
+
+            builder.Entity<IdentityUserRole<string>>(entity =>
+            {
+                entity.ToTable(name: "UserRoles");
+            });
+
+            builder.Entity<IdentityUserClaim<string>>(entity =>
+            {
+                entity.ToTable(name: "UserClaim");
+            });
+
+            builder.Entity<IdentityUserLogin<string>>(entity =>
+            {
+                entity.ToTable(name: "UserLogins");
+            });
+
+            builder.Entity<IdentityUserToken<string>>(entity =>
+            {
+                entity.ToTable(name: "UserTokens");
+            });
+
+            builder.Entity<IdentityRoleClaim<string>>(entity =>
+            {
+                entity.ToTable(name: "RoleClaims");
+            });
+
+            builder.ApplyConfiguration(new AppUserConfiguration());
         }
     }
 }

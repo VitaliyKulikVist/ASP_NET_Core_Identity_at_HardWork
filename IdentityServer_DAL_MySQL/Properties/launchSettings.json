@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "IdentityServer_DAL_MySQL": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:5001/HelloMySQL",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:62335;http://localhost:62336"
+    }
+  }
+}

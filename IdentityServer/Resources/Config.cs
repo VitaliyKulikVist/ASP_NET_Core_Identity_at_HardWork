@@ -124,19 +124,26 @@ namespace IdentityServer.Resources
                     AllowedCorsOrigins = { "https://localhost:7249" }
                 },
 
-
                 new Client
                 {
                     ClientId = "redirectClient",
                     ClientName = "This client realization a redirect technology",
+
+                    RequireClientSecret = true,//те чи будемо використовувати ClientSecrets
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
+                    RequirePkce = true,//потрібен ключ підтвердження для Авторізейшен Код
                     AllowedGrantTypes = GrantTypes.Code,
 
+                    //Перенаправлення після автентифікації клієнтського застосунку
                     RedirectUris = { "https://localhost:44300/signin-oidc" },
-                    FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
+                    //Набір адрес яким дозволено використовувати IdentityServer(іншими словами набір арі)
+                    AllowedCorsOrigins = { "https://localhost:7249" },
+                    //Адреса куди відбувається перенаправлення після виходу з клієнтського застосунку
                     PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
 
+                    //FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
+                    
                     AllowOfflineAccess = true,
                     AllowedScopes = {
                         "openid",

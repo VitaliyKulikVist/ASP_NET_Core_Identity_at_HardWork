@@ -1,6 +1,6 @@
 ﻿using IdentityModel;
 using IdentityServer_DAL.Data;
-using IdentityServer_DAL.Models;
+using IdentityServer_DAL.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;

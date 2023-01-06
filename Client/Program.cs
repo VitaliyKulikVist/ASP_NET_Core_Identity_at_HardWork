@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Client
@@ -59,7 +58,7 @@ namespace Client
             {
                 Address = disco.TokenEndpoint,
                 ClientId = clientID,
-                ClientSecret = clientSecret,
+                ClientSecret = clientSecret
             });
 
             if (tokenResponse.IsError)
