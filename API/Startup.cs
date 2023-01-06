@@ -65,7 +65,7 @@ namespace API
                 {
                     options.Authority = "https://localhost:5001";
                     
-                    /* Івенти для дебагу
+                    /* Для контролю отримання токена
                     options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
@@ -130,14 +130,11 @@ namespace API
                 });
             });
 
-            /* Кукі потім розкоментувати
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = new PathString("/Account/Login");
                 });
-
-            */
         }
 
         public void Configure(IApplicationBuilder app)
