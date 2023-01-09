@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace IdentityServer_FrontEnd
 {
+    //https://www.youtube.com/watch?v=KNt1V72ZRAY
     public class Program
     {
         public static void Main(string[] args)

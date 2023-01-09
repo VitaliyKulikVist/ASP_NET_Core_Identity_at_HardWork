@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
@@ -60,12 +61,13 @@ namespace API
                 });
             });
 
+            /* Працює, всее добре просто зміню на авторизацію лог пас
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer( options =>
                 {
                     options.Authority = "https://localhost:5001";
                     
-                    /* Для контролю отримання токена
+                    ///* Для контролю отримання токена
                     options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
@@ -112,7 +114,7 @@ namespace API
                             return Task.CompletedTask;
                         }
                     };
-                    */
+                    //*
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -122,6 +124,20 @@ namespace API
                     };
                     options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
                 });
+            */
+
+            ///////////////////////////////////код повязаний з авторизацією через логін пароль//////////////////////////
+            services.AddAuthentication(conf =>
+            {
+                conf.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                conf.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, option =>
+                {
+                    option.Authority = "https://localhost:5001";
+                    option.RequireHttpsMetadata = false;
+                });
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             services.AddAuthorization(options =>
             {
