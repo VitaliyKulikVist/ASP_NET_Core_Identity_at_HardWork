@@ -45,7 +45,7 @@ namespace IdentityServer_DAL_MySQL
             {
                 endpoints.MapDefaultControllerRoute();
 
-                endpoints.MapGet("/HelloMySQL", async context =>
+                endpoints.MapGet("/Hello", async context =>
                 {
                     await context.Response.WriteAsync("Hello Vitaliy it`s HelloMySQL pages!");
                 });

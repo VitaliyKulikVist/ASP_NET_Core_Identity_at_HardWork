@@ -1,9 +1,8 @@
 ﻿using IdentityModel;
-using IdentityServer_Common;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
-namespace IdentityServer.Resources
+namespace IdentityServer_Common.Resources
 {
     public static class Config
     {

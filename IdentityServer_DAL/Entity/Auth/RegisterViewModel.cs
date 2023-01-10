@@ -8,18 +8,17 @@ namespace IdentityServer_DAL.Entity.Auth
     public class RegisterViewModel
     {
         [Required]
-        public string UserName { get; set; } = string.Empty;
+        public string UserName { get; set; } = null!;
 
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; } = string.Empty;
+        public string Password { get; set; } = null!;
 
         [Required]
         [DataType(DataType.Password)]
         [Compare("Password")]//Зєднуємо поля, що повинно слугувати показником чи це поле відповідає полю "Password"
-        public string ConfirmPassword { get; set; } = string.Empty;
+        public string ConfirmPassword { get; set; } = null!;
 
-        [Required]
-        public string ReturnUrl { get; set; } = string.Empty;
+        public string? ReturnUrl { get; set; }
     }
 }

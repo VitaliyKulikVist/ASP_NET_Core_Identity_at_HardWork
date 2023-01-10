@@ -1,4 +1,4 @@
-﻿using IdentityServer.Resources;
+﻿using IdentityServer_Common.Resources;
 using IdentityServer_DAL.Data;
 using IdentityServer_DAL.Entity;
 using Microsoft.AspNetCore.Builder;
@@ -25,7 +25,7 @@ namespace IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();//Без цих сервісів не працює app.UseAuthorization();
+            services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -33,24 +33,9 @@ namespace IdentityServer
                 options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
             });
             
-            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
-            {
-                config.Password.RequiredLength = 6;//Мінімальна довжина пароля
-                config.Password.RequireDigit = false;//Не обов'язково використовувати ЦИФРИ
-                config.Password.RequireNonAlphanumeric = false;//Не обов'язково використовувати СИМВОЛИ
-                config.Password.RequireUppercase = false;//Не обов'язково використовувати ВЕЛИКІ букви
-
-            })
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
-            services.ConfigureApplicationCookie(config =>
-            {
-                config.Cookie.Name = "Identity.Test_Cookie_Name";
-                config.LoginPath = new PathString("/Account/Login");
-                config.LogoutPath = new PathString("/Account/Logout");
-            });
-
             
             var builder = services.AddIdentityServer(options =>
             {
@@ -98,7 +83,7 @@ namespace IdentityServer
 
                 endpoints.MapGet("/Hello", async context =>
                 {
-                    await context.Response.WriteAsync("Hello Vitaliy!");
+                    await context.Response.WriteAsync("Hello Vitaliy it`s IdentityServer!");
                 });
             });
         }

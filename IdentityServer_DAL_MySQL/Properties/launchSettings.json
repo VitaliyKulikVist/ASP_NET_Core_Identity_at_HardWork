@@ -3,7 +3,7 @@
     "IdentityServer_DAL_MySQL": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:5001/HelloMySQL",
+      "launchUrl": "https://localhost:5001/Hello",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

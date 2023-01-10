@@ -28,14 +28,13 @@
     margin-top: 10px;
 }
 
-.switch-button
-{
-    margin-top: 8px;
+.switch-button {
+    margin-top: 8px; 
     font-size: 8px;
     border-radius: 4px;
     color: #332600;
     font-family: Arial;
     display: inline-block;
     text-align: center;
-    width: 100%;
+    width: 100%; 
 }

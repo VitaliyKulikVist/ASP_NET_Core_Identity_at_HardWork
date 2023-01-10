@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using IdentityServer4.Services;
 using System.Threading.Tasks;
 using IdentityServer_DAL.Entity.Auth;
+using System;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -25,14 +26,15 @@ namespace IdentityServer_FrontEnd.Controllers
         private readonly IIdentityServerInteractionService _interactionService = null!;
 
         public AuthController(
-            SignInManager<ApplicationUser> signInManager, 
-            UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
             IIdentityServerInteractionService identityServerInteractionService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _interactionService = identityServerInteractionService;
         }
+
 
         [HttpGet]
         public IActionResult Login(string returnURL)
@@ -53,7 +55,7 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> Login (LoginViewModel loginViewModel)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return View(loginViewModel);
             }
@@ -66,19 +68,21 @@ namespace IdentityServer_FrontEnd.Controllers
                 return View(loginViewModel);
             }
 
-            //isPersistent - параметр відноситься до Cokie
+            //HttpContext.User.
+
+            //isPersistent - параметр відноситься до Cookie
             //lockoutOnFailure - параметр відповідає за те, щоб заблокувати акаунт якщо було декілька не вдалих спроб
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, false, false);
-            if (result.Succeeded) 
+            if (result.Succeeded && !string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl)) 
             {
-                return Redirect(loginViewModel.ReturnUrl);
+                return Redirect(loginViewModel.ReturnUrl!);
             }
 
             ModelState.AddModelError(string.Empty, "Login error");
 
             return View(loginViewModel);
         }
-        /////////////////////////////////Методи для реєстрації користувача///////////////////////////////////////
+
         /// <summary>
         /// Метод необхідний для повернення форми
         /// </summary>
@@ -92,7 +96,7 @@ namespace IdentityServer_FrontEnd.Controllers
                 ReturnUrl = returnUrl 
             };
 
-            return View(returnUrl);
+            return View(vievModeel);
         }
 
         /// <summary>
@@ -120,7 +124,7 @@ namespace IdentityServer_FrontEnd.Controllers
                 //Робимо вхід цього користувача
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return Redirect(registerViewModel.ReturnUrl);
+                return Redirect(registerViewModel.ReturnUrl!);
             }
 
             ModelState.AddModelError(string.Empty, "Error creating user");

@@ -2,7 +2,7 @@
 <head>
     <link href= @Url.Content("~/styles/app.css") rel="stylesheet" type="text/css" /><!-- Це те звідки буде братись стилістика цієї сторінки-->
 </head>
-<form asp-controller="Auth" asp-action="Login" metod= "post"><!--Це за якою адресою буде знаходити сторінка-->
+<form asp-controller="Auth" asp-action="Login" metod= "post"><!--Це яктй метод буде відповідати за роботу з сторінкою-->
     <input type="hidden" asp-for="ReturnUrl" /><!-- тип який буде прихований і міститиме посилання на повернення-->
     <div class="heared">Login</div><!--Це заголовок для Авторизації -->
     <div class="block"><!-- Це заголовок що все що в ньому це буде окремий блок -->
