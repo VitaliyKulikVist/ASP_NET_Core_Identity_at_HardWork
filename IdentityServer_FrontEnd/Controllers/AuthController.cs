@@ -4,7 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using IdentityServer4.Services;
 using System.Threading.Tasks;
 using IdentityServer_DAL.Entity.Auth;
+using FluentValidation;
 using System;
+using FluentValidation.Results;
+using FluentValidation.AspNetCore;
+using System.ComponentModel;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -25,14 +29,22 @@ namespace IdentityServer_FrontEnd.Controllers
         /// </summary>
         private readonly IIdentityServerInteractionService _interactionService = null!;
 
+        private readonly IValidator<LoginViewModel> validatorLoginViewModel = null!;
+        private readonly IValidator<RegisterViewModel> validatorRegisterViewModel = null!;
+
         public AuthController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            IIdentityServerInteractionService identityServerInteractionService)
+            IIdentityServerInteractionService identityServerInteractionService,
+            IValidator<LoginViewModel> validatorLoginView,
+            IValidator<RegisterViewModel> validatorRegisterView)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _interactionService = identityServerInteractionService;
+
+            validatorLoginViewModel = validatorLoginView;
+            validatorRegisterViewModel = validatorRegisterView;
         }
 
 
@@ -44,7 +56,7 @@ namespace IdentityServer_FrontEnd.Controllers
                 ReturnUrl = returnURL 
             };
 
-            return View(viewModel);
+            return View("Login", viewModel);
         }
 
         /// <summary>
@@ -55,9 +67,10 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> Login (LoginViewModel loginViewModel)
         {
-            if (!ModelState.IsValid)
+            ValidationResult validationResult = await validatorLoginViewModel.ValidateAsync(loginViewModel);
+            if (!validationResult.IsValid)
             {
-                return View(loginViewModel);
+                return View("Login", loginViewModel);
             }
 
             var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
@@ -65,7 +78,7 @@ namespace IdentityServer_FrontEnd.Controllers
             {
                 ModelState.AddModelError(string.Empty, "User not found");
 
-                return View(loginViewModel);
+                return View("Login", loginViewModel);
             }
 
             //HttpContext.User.
@@ -80,7 +93,7 @@ namespace IdentityServer_FrontEnd.Controllers
 
             ModelState.AddModelError(string.Empty, "Login error");
 
-            return View(loginViewModel);
+            return View("Login", loginViewModel);
         }
 
         /// <summary>
@@ -96,7 +109,7 @@ namespace IdentityServer_FrontEnd.Controllers
                 ReturnUrl = returnUrl 
             };
 
-            return View(vievModeel);
+            return View("Register", vievModeel);
         }
 
         /// <summary>
@@ -107,9 +120,10 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            if (!ModelState.IsValid)
+            ValidationResult validationResult = await validatorRegisterViewModel.ValidateAsync(registerViewModel);
+            if (!validationResult.IsValid)
             {
-                return View(registerViewModel);
+                return View("Register", registerViewModel);
             }
 
             var user = new ApplicationUser
@@ -129,7 +143,7 @@ namespace IdentityServer_FrontEnd.Controllers
 
             ModelState.AddModelError(string.Empty, "Error creating user");
 
-            return View(registerViewModel);
+            return View("Register", registerViewModel);
         }
 
         /// <summary>

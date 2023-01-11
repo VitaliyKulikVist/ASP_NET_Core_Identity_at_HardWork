@@ -11,6 +11,12 @@ using IdentityServer_DAL.Entity;
 using IdentityServer_Common.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using FluentValidation;
+using System;
+using IdentityServer_DAL.Entity.Auth;
+using IdentityServer_DAL.FluentValidation.Auth;
+using FluentValidation.AspNetCore;
+using System.Reflection;
 
 namespace IdentityServer_FrontEnd
 {
@@ -28,6 +34,9 @@ namespace IdentityServer_FrontEnd
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddValidatorsFromAssemblyContaining<LoginViewModel>();
+            services.AddValidatorsFromAssemblyContaining<RegisterViewModel>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

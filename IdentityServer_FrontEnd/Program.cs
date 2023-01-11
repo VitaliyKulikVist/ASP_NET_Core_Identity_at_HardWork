@@ -9,6 +9,10 @@ namespace IdentityServer_FrontEnd
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+
+            //AdditionalClasses.OpenBrowser("https://localhost:7216/Auth/Login");
+            //AdditionalClasses.OpenBrowser("https://localhost:7216/Auth/Register");
+
             host.Run();
         }
 
