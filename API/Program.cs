@@ -1,9 +1,8 @@
 using Microsoft.Extensions.Hosting;
 using System;
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
-using Serilog.Events;
 using Microsoft.AspNetCore.Hosting;
+using IdentityServer_Common.Common;
 
 namespace API
 {
@@ -11,7 +10,7 @@ namespace API
     {
         public static int Main(string[] args)
         {
-            AddAndConfiguredLogger();
+            AdditionalClasses.AddAndConfiguredLogger();
 
             try
             {
@@ -32,21 +31,6 @@ namespace API
             {
                 Log.CloseAndFlush();
             }
-        }
-        private static void AddAndConfiguredLogger()
-        {
-            AnsiConsoleTheme theme = AnsiConsoleTheme.Code;
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-                .MinimumLevel.Override("System", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: theme)
-                .CreateLogger();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>

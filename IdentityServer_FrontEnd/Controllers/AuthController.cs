@@ -7,6 +7,7 @@ using IdentityServer_DAL.Entity.Auth;
 using FluentValidation;
 using FluentValidation.Results;
 using FluentValidation.AspNetCore;
+using Serilog;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -47,11 +48,13 @@ namespace IdentityServer_FrontEnd.Controllers
 
 
         [HttpGet]
-        public IActionResult Login(string returnURL)
+        public IActionResult Login(string returnUrl)
         {
+            Log.Debug($"Login [Get] RedirectURL:\t{returnUrl?? "Empty" : returnUrl}");
+
             var viewModel = new LoginViewModel 
             { 
-                ReturnUrl = returnURL 
+                ReturnUrl = returnUrl
             };
 
             return View("Login", viewModel);
@@ -65,13 +68,22 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> Login (LoginViewModel loginViewModel)
         {
+            Log.Debug($"Try Login [Post] user:\tName: {loginViewModel.UserName}\tPassword: {loginViewModel.Password}\nRedirectURL:\t{loginViewModel.ReturnUrl ?? "Empty": loginViewModel.ReturnUrl}");
+
             ValidationResult validationResult = await validatorLoginViewModel.ValidateAsync(loginViewModel);
             if (!validationResult.IsValid)
             {
                 validationResult.AddToModelState(this.ModelState);
 
+                foreach (var error in validationResult.Errors)
+                {
+                    Log.Debug($"Validation [Login] Error:\t {error}");
+                }
+
                 return View("Login", loginViewModel);
             }
+
+            Log.Debug($"Validation [Login] Done!");
 
             var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
             if (user == null)
@@ -104,6 +116,8 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpGet]
         public IActionResult Register (string returnUrl)
         {
+            Log.Debug($"Register [Get] RedirectURL:\t{returnUrl ?? "Empty": returnUrl}");
+
             var vievModeel = new RegisterViewModel 
             { 
                 ReturnUrl = returnUrl 
@@ -120,11 +134,22 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
+            Log.Debug($"Try Register [Post] user:\tName: {registerViewModel.UserName}\tPassword: {registerViewModel.Password}\t ConfirmPassword: {registerViewModel.ConfirmPassword}\nRedirectURL:\t{registerViewModel.ReturnUrl?? "Empty": registerViewModel.ReturnUrl}");
+
             ValidationResult validationResult = await validatorRegisterViewModel.ValidateAsync(registerViewModel);
             if (!validationResult.IsValid)
             {
+                validationResult.AddToModelState(this.ModelState);
+
+                foreach (var error in validationResult.Errors)
+                {
+                    Log.Debug($"Validation [Login] Error:\t {error}");
+                }
+
                 return View("Register", registerViewModel);
             }
+
+            Log.Debug($"Validation [Register] Done!");
 
             var user = new ApplicationUser
             {
@@ -154,6 +179,8 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpGet]
         public async Task<IActionResult> LogOut(string logOutId)
         {
+            Log.Debug($"LogOut ID:\t{logOutId}");
+
             await _signInManager.SignOutAsync();
 
             var logOutRequest = await _interactionService.GetLogoutContextAsync(logOutId);

@@ -1,3 +1,4 @@
+using IdentityServer_Common.Common;
 using IdentityServer_DAL.Configurations;
 using IdentityServer_DAL.Data;
 using IdentityServer_DAL_MySQL.MenegmentData;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 
 namespace IdentityServer_DAL_MySQL
@@ -14,6 +16,8 @@ namespace IdentityServer_DAL_MySQL
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+
+            AdditionalClasses.AddAndConfiguredLogger();
 
             #region Create DB
             using (var scope = host.Services.CreateScope())
@@ -50,10 +54,14 @@ namespace IdentityServer_DAL_MySQL
             switch (input)
             {
                 case 1:
+                Log.Information($"Seeding  Data Start{DateTime.UtcNow}");
                 SeedData.EnsureSeedData(Constants.ConnectionMySQL);
+                Log.Information($"Seeding  Data Finish{DateTime.UtcNow}");
                 break; 
                 case 2:
+                Log.Information($"Deleteing  Data Start{DateTime.UtcNow}");
                 DeleteData.DeleteAllUsers(Constants.ConnectionMySQL);
+                Log.Information($"Deleteing  Data Finish{DateTime.UtcNow}");
                 break;
                 default:
                 break;
@@ -64,6 +72,7 @@ namespace IdentityServer_DAL_MySQL
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
                 Host.CreateDefaultBuilder(args)
+                    .UseSerilog()
                     .ConfigureWebHostDefaults(webBuilder =>
                     {
                         webBuilder.UseStartup<Startup>();

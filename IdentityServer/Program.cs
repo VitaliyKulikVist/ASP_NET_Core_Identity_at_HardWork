@@ -2,8 +2,6 @@ using IdentityServer_Common.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
 using System;
 
 namespace IdentityServer
@@ -12,7 +10,7 @@ namespace IdentityServer
     {
         public static int Main(string[] args)
         {
-            AddAndConfiguredLogger();
+            AdditionalClasses.AddAndConfiguredLogger();
 
             try
             {
@@ -35,21 +33,6 @@ namespace IdentityServer
             {
                 Log.CloseAndFlush();
             }
-        }
-        private static void AddAndConfiguredLogger()
-        {
-            AnsiConsoleTheme theme = AnsiConsoleTheme.Literate;
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-                .MinimumLevel.Override("System", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: theme)
-                .CreateLogger();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>

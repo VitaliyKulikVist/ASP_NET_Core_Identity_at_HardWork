@@ -1,5 +1,7 @@
+using IdentityServer_Common.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace IdentityServer_FrontEnd
 {
@@ -10,6 +12,8 @@ namespace IdentityServer_FrontEnd
         {
             var host = CreateHostBuilder(args).Build();
 
+            AdditionalClasses.AddAndConfiguredLogger();
+
             //AdditionalClasses.OpenBrowser("https://localhost:7216/Auth/Login");
             //AdditionalClasses.OpenBrowser("https://localhost:7216/Auth/Register");
 
@@ -18,6 +22,7 @@ namespace IdentityServer_FrontEnd
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
                 Host.CreateDefaultBuilder(args)
+                    .UseSerilog()
                     .ConfigureWebHostDefaults(webBuilder =>
                     {
                         webBuilder.UseStartup<Startup>();
