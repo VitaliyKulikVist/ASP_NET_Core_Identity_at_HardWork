@@ -5,10 +5,8 @@ using IdentityServer4.Services;
 using System.Threading.Tasks;
 using IdentityServer_DAL.Entity.Auth;
 using FluentValidation;
-using System;
 using FluentValidation.Results;
 using FluentValidation.AspNetCore;
-using System.ComponentModel;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -70,6 +68,8 @@ namespace IdentityServer_FrontEnd.Controllers
             ValidationResult validationResult = await validatorLoginViewModel.ValidateAsync(loginViewModel);
             if (!validationResult.IsValid)
             {
+                validationResult.AddToModelState(this.ModelState);
+
                 return View("Login", loginViewModel);
             }
 

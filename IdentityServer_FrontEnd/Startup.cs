@@ -12,11 +12,9 @@ using IdentityServer_Common.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using FluentValidation;
-using System;
 using IdentityServer_DAL.Entity.Auth;
-using IdentityServer_DAL.FluentValidation.Auth;
-using FluentValidation.AspNetCore;
-using System.Reflection;
+using System;
+using FluentValidation.Results;
 
 namespace IdentityServer_FrontEnd
 {
@@ -103,6 +101,34 @@ namespace IdentityServer_FrontEnd
                 {
                     await context.Response.WriteAsync("Hello Vitaliy it`s FrontEnd pages!");
                 });
+
+                #region Спроба реалізувати автоматичну валідацію
+                endpoints.MapPost("Auth/Login", async (IValidator<LoginViewModel> validator, LoginViewModel loginEntity) =>
+                {
+                    ValidationResult validationResult = await validator.ValidateAsync(loginEntity);
+
+                    if (!validationResult.IsValid)
+                    {
+                        return Results.ValidationProblem(validationResult.ToDictionary());
+                    }
+
+                    return Results.Created($"/{loginEntity.UserName}", loginEntity);
+                });
+
+                endpoints.MapPost("Auth/Register", async (IValidator<RegisterViewModel> validator, RegisterViewModel registerEntity) =>
+                {
+                    ValidationResult validationResult = await validator.ValidateAsync(registerEntity);
+
+                    if (!validationResult.IsValid)
+                    {
+                        return Results.ValidationProblem(validationResult.ToDictionary());
+                    }
+
+                    return Results.Created($"/{registerEntity.UserName}", registerEntity);
+                });
+
+                #endregion
+
             });
         }
     }
