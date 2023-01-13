@@ -13,8 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using FluentValidation;
 using IdentityServer_DAL.Entity.Auth;
-using FluentValidation.Results;
-using FluentValidation.AspNetCore;
+using IdentityServer_Common.Extensions;
 
 namespace IdentityServer_FrontEnd
 {
@@ -31,9 +30,14 @@ namespace IdentityServer_FrontEnd
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(conf =>
+            {
+                // Якщо нема ? не буде рахувати помилкою
+                conf.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true; 
+            });
 
             services.AddValidatorsFromAssemblyContaining<LoginViewModel>();
+            services.AddValidation();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

@@ -8,8 +8,8 @@ namespace IdentityServer_DAL.FluentValidation.Auth
     {
         public LoginViewModelValidator() 
         {
-            RuleFor(x => x.UserName).UserName().WithMessage("Please specify a User Name.");
-            RuleFor(x => x.Password).Password().WithMessage("Please specify a Password.");
+            RuleFor(x => x.UserName).UserName();
+            RuleFor(x => x.Password).Password();
         }
     }
 }

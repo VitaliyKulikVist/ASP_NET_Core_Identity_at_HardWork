@@ -1,4 +1,16 @@
 ﻿@model LoginViewModel
+
+@if (!ViewData.ModelState.IsValid)
+{
+    foreach (var errors in ViewData.ModelState.Values.SelectMany(s => s.Errors))
+    {
+        <div>
+            <label>
+                @errors.ErrorMessage
+            </label>
+        </div>
+    }
+}
 <head>
     <link href= @Url.Content("~/styles/app.css") rel="stylesheet" type="text/css" /><!-- Це те звідки буде братись стилістика цієї сторінки-->
 </head>
@@ -8,12 +20,12 @@
     <div class="block"><!-- Це заголовок що все що в ньому це буде окремий блок -->
         <label>Username</label><!--Напис Username -->
         <input asp-for="UserName" class="input" /><!--Поле для введення даних а саме логіну -->
-        <span asp-validator-for="UserName"></span><!--Якщо валідація в середині контролерів не проходить -->
+        <!-- <span asp-validator-for="UserName"></span>Якщо валідація в середині контролерів не проходить -->
     </div>
     <div class="block">
         <label>Password</label>
         <input asp-for="Password" class="input" />
-        <span asp-validator-for="Password"></span>
+        <!-- <span asp-validator-for="Password"></span>-->
     </div>
     <div class="block">
         <button type="submit" class="button"><!--Кнопка підтвердження -->

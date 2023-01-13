@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IdentityServer_Common\IdentityServer_Common.csproj" />
     <ProjectReference Include="..\IdentityServer_DAL_MySQL\IdentityServer_DAL_MySQL.csproj" />
   </ItemGroup>
 

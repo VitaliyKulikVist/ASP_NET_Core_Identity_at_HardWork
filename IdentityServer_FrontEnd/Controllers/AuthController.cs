@@ -9,7 +9,7 @@ using FluentValidation.Results;
 using FluentValidation.AspNetCore;
 using Serilog;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
+using IdentityServer_Common.Infrastructure.Interface;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -30,8 +30,7 @@ namespace IdentityServer_FrontEnd.Controllers
         /// </summary>
         private readonly IIdentityServerInteractionService _interactionService;
 
-        private readonly IValidator<LoginViewModel> _validatorLoginViewModel;
-        private readonly IValidator<RegisterViewModel> _validatorRegisterViewModel;
+        private readonly IValidation _validation;
 
         private readonly IHostEnvironment _environment;
 
@@ -39,30 +38,27 @@ namespace IdentityServer_FrontEnd.Controllers
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IIdentityServerInteractionService identityServerInteractionService,
-            IValidator<LoginViewModel> validatorLoginView,
-            IValidator<RegisterViewModel> validatorRegisterView,
+            IValidation validation,
             IHostEnvironment hostEnvironment)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _interactionService = identityServerInteractionService;
 
-            _validatorLoginViewModel = validatorLoginView;
-            _validatorRegisterViewModel = validatorRegisterView;
+            _validation = validation;
 
             _environment = hostEnvironment;
         }
 
 
         [HttpGet]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login(string? returnUrl)
         {
             if( _environment.IsDevelopment())
             {
                 Log.Debug("Login [Get] RedirectURL:{returnURL}", 
                     string.IsNullOrWhiteSpace(returnUrl) ? "Empty" : returnUrl);
             }
-                
 
             var viewModel = new LoginViewModel 
             { 
@@ -87,16 +83,10 @@ namespace IdentityServer_FrontEnd.Controllers
                     string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl) ? "Empty": loginViewModel.ReturnUrl);
             }
 
-            ValidationResult validationResult = await _validatorLoginViewModel.ValidateAsync(loginViewModel);
-            if (!validationResult.IsValid)
+            await _validation.ValidateAsync(loginViewModel, ModelState);
+
+            if (!ModelState.IsValid)
             {
-                validationResult.AddToModelState(this.ModelState);
-
-                foreach (var error in validationResult.Errors)
-                {
-                    Log.Debug($"Validation [Login] Error:\t {error}");
-                }
-
                 return View("Login", loginViewModel);
             }
 
@@ -138,7 +128,7 @@ namespace IdentityServer_FrontEnd.Controllers
         /// <param name="returnUrl"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Register (string returnUrl)
+        public IActionResult Register (string? returnUrl)
         {
 
             if (_environment.IsDevelopment())
@@ -171,15 +161,10 @@ namespace IdentityServer_FrontEnd.Controllers
                     string.IsNullOrWhiteSpace(registerViewModel.ReturnUrl) ? "Empty" : registerViewModel.ReturnUrl);
             }
 
-            ValidationResult validationResult = await _validatorRegisterViewModel.ValidateAsync(registerViewModel);
-            if (!validationResult.IsValid)
-            {
-                validationResult.AddToModelState(this.ModelState);
-                foreach (var error in validationResult.Errors)
-                {
-                    Log.Debug($"Validation [Login] Error:\t {error}");
-                }
+            await _validation.ValidateAsync(registerViewModel, ModelState);
 
+            if (!ModelState.IsValid)
+            {
                 return View("Register", registerViewModel);
             }
 
