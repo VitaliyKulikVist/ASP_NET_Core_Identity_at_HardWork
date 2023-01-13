@@ -8,6 +8,8 @@ using FluentValidation;
 using FluentValidation.Results;
 using FluentValidation.AspNetCore;
 using Serilog;
+using Microsoft.Extensions.Hosting;
+using System.Linq;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -16,41 +18,51 @@ namespace IdentityServer_FrontEnd.Controllers
         /// <summary>
         /// Необхідний для реалізації авторизації(входу)
         /// </summary>
-        private readonly SignInManager<ApplicationUser> _signInManager = null!;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         /// <summary>
         /// Необхідний для пошуку, та створення користувачів
         /// </summary>
-        private readonly UserManager<ApplicationUser> _userManager = null!;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         /// <summary>
         /// Необхідний для розлогінення
         /// </summary>
-        private readonly IIdentityServerInteractionService _interactionService = null!;
+        private readonly IIdentityServerInteractionService _interactionService;
 
-        private readonly IValidator<LoginViewModel> validatorLoginViewModel = null!;
-        private readonly IValidator<RegisterViewModel> validatorRegisterViewModel = null!;
+        private readonly IValidator<LoginViewModel> _validatorLoginViewModel;
+        private readonly IValidator<RegisterViewModel> _validatorRegisterViewModel;
+
+        private readonly IHostEnvironment _environment;
 
         public AuthController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IIdentityServerInteractionService identityServerInteractionService,
             IValidator<LoginViewModel> validatorLoginView,
-            IValidator<RegisterViewModel> validatorRegisterView)
+            IValidator<RegisterViewModel> validatorRegisterView,
+            IHostEnvironment hostEnvironment)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _interactionService = identityServerInteractionService;
 
-            validatorLoginViewModel = validatorLoginView;
-            validatorRegisterViewModel = validatorRegisterView;
+            _validatorLoginViewModel = validatorLoginView;
+            _validatorRegisterViewModel = validatorRegisterView;
+
+            _environment = hostEnvironment;
         }
 
 
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
-            Log.Debug($"Login [Get] RedirectURL:\t{returnUrl?? "Empty" : returnUrl}");
+            if( _environment.IsDevelopment())
+            {
+                Log.Debug("Login [Get] RedirectURL:{returnURL}", 
+                    string.IsNullOrWhiteSpace(returnUrl) ? "Empty" : returnUrl);
+            }
+                
 
             var viewModel = new LoginViewModel 
             { 
@@ -68,9 +80,14 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> Login (LoginViewModel loginViewModel)
         {
-            Log.Debug($"Try Login [Post] user:\tName: {loginViewModel.UserName}\tPassword: {loginViewModel.Password}\nRedirectURL:\t{loginViewModel.ReturnUrl ?? "Empty": loginViewModel.ReturnUrl}");
+            if (_environment.IsDevelopment())
+            {
+                Log.Debug("Try Login [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", loginViewModel.UserName,
+                    loginViewModel.Password,
+                    string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl) ? "Empty": loginViewModel.ReturnUrl);
+            }
 
-            ValidationResult validationResult = await validatorLoginViewModel.ValidateAsync(loginViewModel);
+            ValidationResult validationResult = await _validatorLoginViewModel.ValidateAsync(loginViewModel);
             if (!validationResult.IsValid)
             {
                 validationResult.AddToModelState(this.ModelState);
@@ -88,6 +105,7 @@ namespace IdentityServer_FrontEnd.Controllers
             var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
             if (user == null)
             {
+                Log.Debug($"User NOT found at:\tname: {loginViewModel.UserName}\tpassword: {loginViewModel.Password}");
                 ModelState.AddModelError(string.Empty, "User not found");
 
                 return View("Login", loginViewModel);
@@ -98,6 +116,12 @@ namespace IdentityServer_FrontEnd.Controllers
             //isPersistent - параметр відноситься до Cookie
             //lockoutOnFailure - параметр відповідає за те, щоб заблокувати акаунт якщо було декілька не вдалих спроб
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, false, false);
+
+            if (result.Succeeded)
+            {
+                Log.Information($"USER\t{loginViewModel.UserName}\t Found!");
+            }
+
             if (result.Succeeded && !string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl)) 
             {
                 return Redirect(loginViewModel.ReturnUrl!);
@@ -116,7 +140,12 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpGet]
         public IActionResult Register (string returnUrl)
         {
-            Log.Debug($"Register [Get] RedirectURL:\t{returnUrl ?? "Empty": returnUrl}");
+
+            if (_environment.IsDevelopment())
+            {
+                Log.Debug("Register [Get] RedirectURL:{returnURL}",
+                    string.IsNullOrWhiteSpace(returnUrl) ? "Empty" : returnUrl);
+            }
 
             var vievModeel = new RegisterViewModel 
             { 
@@ -125,7 +154,6 @@ namespace IdentityServer_FrontEnd.Controllers
 
             return View("Register", vievModeel);
         }
-
         /// <summary>
         /// Метод необхідний для дій реєстрації, ПІСЛЯ заповнення форми
         /// </summary>
@@ -134,13 +162,19 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            Log.Debug($"Try Register [Post] user:\tName: {registerViewModel.UserName}\tPassword: {registerViewModel.Password}\t ConfirmPassword: {registerViewModel.ConfirmPassword}\nRedirectURL:\t{registerViewModel.ReturnUrl?? "Empty": registerViewModel.ReturnUrl}");
+            if (_environment.IsDevelopment())
+            {
+                Log.Debug("Try Register [Post] user:\tName: {UserName}\tPassword: {Password}\tConfirmPassword: {ConfirmPassword}\nRedirectURL:\t{ReturnUrl}",
+                    registerViewModel.UserName,
+                    registerViewModel.Password,
+                    registerViewModel.ConfirmPassword,
+                    string.IsNullOrWhiteSpace(registerViewModel.ReturnUrl) ? "Empty" : registerViewModel.ReturnUrl);
+            }
 
-            ValidationResult validationResult = await validatorRegisterViewModel.ValidateAsync(registerViewModel);
+            ValidationResult validationResult = await _validatorRegisterViewModel.ValidateAsync(registerViewModel);
             if (!validationResult.IsValid)
             {
                 validationResult.AddToModelState(this.ModelState);
-
                 foreach (var error in validationResult.Errors)
                 {
                     Log.Debug($"Validation [Login] Error:\t {error}");

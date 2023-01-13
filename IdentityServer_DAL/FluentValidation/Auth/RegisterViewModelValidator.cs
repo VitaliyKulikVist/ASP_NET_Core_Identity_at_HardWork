@@ -8,18 +8,16 @@ namespace IdentityServer_DAL.FluentValidation.Auth
     {
         public RegisterViewModelValidator() 
         {
-            RuleFor(x => x.UserName).UserName().WithMessage("Please specify a User Name.");
-            RuleFor(x => x.Password).Password().WithMessage("Please specify a Password.");
-            RuleFor(x => x.ConfirmPassword).NotEmpty().Equal(customer => customer.Password).Must(BeAValidConfirmPassword).WithMessage("Please confirm a Password."); ;
-            RuleFor(x => x.ReturnUrl);
-        }
-
-        private bool BeAValidConfirmPassword(string confirmPassword)
-        {
-            // custom confirmPassword validating logic goes here.
-
-
-            return true;
+            RuleFor(x => x.UserName)
+                .UserName()
+                .WithMessage("Please specify a User Name.");
+            RuleFor(x => x.Password)
+                .Password()
+                .WithMessage("Please specify a Password.");
+            RuleFor(x => x.ConfirmPassword)
+                .Password()
+                .Equal(customer => customer.Password)
+                .WithMessage("Please confirm a Password.");
         }
     }
 }
