@@ -1,4 +1,9 @@
 ﻿@model RegisterViewModel
+
+@{
+    var errorModel = ViewBag.ErrorModel as IdentityServer_FrontEnd.ViewModels.ErrorViewModel;//так дуже погано робити, користуватись динаміком- погано, треба знайти інше рішення
+}
+
 <head>
     <link href=@Url.Content("~/styles/app.css") rel="stylesheet" type="text/css" />
 </head>
@@ -6,19 +11,49 @@
     <input type="hidden" asp-for="ReturnUrl" />
     <div class="heared">Sign Up</div>
     <div class="block">
+        @if (errorModel != null && errorModel.UserNameErrors != null)
+        {
+            foreach (var item in errorModel.UserNameErrors)
+            {
+                <div>
+                    <label>
+                        @item.ErrorMessage
+                    </label>
+                </div>
+            }
+        }
         <label>Username</label>
         <input asp-for="UserName" class="input" />
-        @*<span asp-validator-for="UserName"></span>*@
     </div>
     <div class="block">
+        @if (errorModel != null && errorModel.PasswordErrors != null)
+        {
+            foreach (var item in errorModel.PasswordErrors)
+            {
+                        <div>
+                            <label>
+                                @item.ErrorMessage
+                            </label>
+                        </div>
+            }
+        }
         <label>Password</label>
         <input asp-for="Password" class="input" />
-        @*<span asp-validator-for="Password"></span>*@
     </div>
     <div class="block">
+        @if (errorModel != null && errorModel.ConfirmPasswordErrors != null)
+        {
+            foreach (var item in errorModel.ConfirmPasswordErrors)
+            {
+                <div>
+                    <label>
+                        @item.ErrorMessage
+                    </label>
+                </div>
+            }
+        }
         <label>Confirm password</label>
         <input asp-for="ConfirmPassword" class="input" />
-        @*<span asp-validator-for="ConfirmPassword"></span>*@
     </div>
     <div class="block">
         <button type="submit" class="button">

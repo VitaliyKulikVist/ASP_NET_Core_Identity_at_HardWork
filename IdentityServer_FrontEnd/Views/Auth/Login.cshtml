@@ -1,16 +1,9 @@
-﻿@model LoginViewModel
+﻿@model LoginViewModel;
 
-@if (!ViewData.ModelState.IsValid)
-{
-    foreach (var errors in ViewData.ModelState.Values.SelectMany(s => s.Errors))
-    {
-        <div>
-            <label>
-                @errors.ErrorMessage
-            </label>
-        </div>
-    }
+@{
+    var errorModel = ViewBag.ErrorModel as IdentityServer_FrontEnd.ViewModels.ErrorViewModel;//так дуже погано робити, користуватись динаміком- погано, треба знайти інше рішення
 }
+
 <head>
     <link href= @Url.Content("~/styles/app.css") rel="stylesheet" type="text/css" /><!-- Це те звідки буде братись стилістика цієї сторінки-->
 </head>
@@ -18,14 +11,34 @@
     <input type="hidden" asp-for="ReturnUrl" /><!-- тип який буде прихований і міститиме посилання на повернення-->
     <div class="heared">Login</div><!--Це заголовок для Авторизації -->
     <div class="block"><!-- Це заголовок що все що в ньому це буде окремий блок -->
+        @if (errorModel != null && errorModel.UserNameErrors != null)
+        {
+            foreach (var item in errorModel.UserNameErrors)
+            {
+                <div>
+                    <label>
+                        @item.ErrorMessage
+                    </label>
+                </div>
+            }
+        }
         <label>Username</label><!--Напис Username -->
         <input asp-for="UserName" class="input" /><!--Поле для введення даних а саме логіну -->
-        <!-- <span asp-validator-for="UserName"></span>Якщо валідація в середині контролерів не проходить -->
     </div>
     <div class="block">
+        @if (errorModel != null && errorModel.PasswordErrors != null)
+        {
+            foreach (var item in errorModel.PasswordErrors)
+            {
+                        <div>
+                          <label>
+                                @item.ErrorMessage
+                          </label>
+                        </div>
+            }
+        }
         <label>Password</label>
         <input asp-for="Password" class="input" />
-        <!-- <span asp-validator-for="Password"></span>-->
     </div>
     <div class="block">
         <button type="submit" class="button"><!--Кнопка підтвердження -->

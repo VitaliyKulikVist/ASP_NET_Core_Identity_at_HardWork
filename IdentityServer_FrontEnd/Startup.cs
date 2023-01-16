@@ -12,8 +12,8 @@ using IdentityServer_Common.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using FluentValidation;
-using IdentityServer_DAL.Entity.Auth;
 using IdentityServer_Common.Extensions;
+using IdentityServer_DAL.Entity.ViewModel.Auth;
 
 namespace IdentityServer_FrontEnd
 {

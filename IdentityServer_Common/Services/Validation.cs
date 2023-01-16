@@ -2,7 +2,6 @@
 using IdentityServer_Common.Infrastructure.Interface;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using System;
 using System.Threading.Tasks;
 

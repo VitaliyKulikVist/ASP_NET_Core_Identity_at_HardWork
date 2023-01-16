@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IdentityServer_DAL.Entity.Auth
+namespace IdentityServer_DAL.Entity.ViewModel.Auth
 {
     /// <summary>
     /// Клас являє собою сутність для авторизації користувача

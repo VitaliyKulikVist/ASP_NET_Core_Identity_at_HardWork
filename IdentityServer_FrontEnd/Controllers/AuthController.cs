@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using IdentityServer4.Services;
 using System.Threading.Tasks;
-using IdentityServer_DAL.Entity.Auth;
-using FluentValidation;
-using FluentValidation.Results;
-using FluentValidation.AspNetCore;
 using Serilog;
 using Microsoft.Extensions.Hosting;
 using IdentityServer_Common.Infrastructure.Interface;
+using IdentityServer_FrontEnd.ViewModels;
+using IdentityServer_DAL.Entity.ViewModel.Auth;
+using System.Linq;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -87,15 +86,31 @@ namespace IdentityServer_FrontEnd.Controllers
 
             if (!ModelState.IsValid)
             {
+                var errorModel = new ErrorViewModel();
+                var errors = ModelState.Values.SelectMany(s => s.Errors);
+                var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
+                errorModel.UserNameErrors = userNameTemp;
+                var passwordTemp = errors.Where(s => s.ErrorMessage.Contains(nameof(loginViewModel.Password)));
+                errorModel.PasswordErrors = passwordTemp;
+
+                ViewBag.ErrorModel = errorModel;//Не можна використовувати динамік, в подальшому переробити
+
                 return View("Login", loginViewModel);
             }
 
-            Log.Debug($"Validation [Login] Done!");
+            if (_environment.IsDevelopment())
+            {
+                Log.Debug("Validation [Login] Done!");
+            }
 
             var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
             if (user == null)
             {
-                Log.Debug($"User NOT found at:\tname: {loginViewModel.UserName}\tpassword: {loginViewModel.Password}");
+                if (_environment.IsDevelopment())
+                {
+                    Log.Debug("User NOT found at:\tname: {UserName}\tpassword: {Password}", loginViewModel.UserName, loginViewModel.Password);
+                }
+
                 ModelState.AddModelError(string.Empty, "User not found");
 
                 return View("Login", loginViewModel);
@@ -107,9 +122,9 @@ namespace IdentityServer_FrontEnd.Controllers
             //lockoutOnFailure - параметр відповідає за те, щоб заблокувати акаунт якщо було декілька не вдалих спроб
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, false, false);
 
-            if (result.Succeeded)
+            if (result.Succeeded && _environment.IsDevelopment())
             {
-                Log.Information($"USER\t{loginViewModel.UserName}\t Found!");
+                Log.Information("USER\t{UserName}\t Found!", loginViewModel.UserName);
             }
 
             if (result.Succeeded && !string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl)) 
@@ -165,10 +180,25 @@ namespace IdentityServer_FrontEnd.Controllers
 
             if (!ModelState.IsValid)
             {
+                var errorModel = new ErrorViewModel();
+                var errors = ModelState.Values.SelectMany(s => s.Errors);
+                var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
+                errorModel.UserNameErrors = userNameTemp;
+                var passwordTemp = errors.Where(s => s.ErrorMessage.Contains("Password") && !s.ErrorMessage.Contains("Confirm"));
+                errorModel.PasswordErrors = passwordTemp;
+                var confirmPasswordTemp = errors.Where(s => s.ErrorMessage.Contains("Confirm Password"));
+                errorModel.ConfirmPasswordErrors = confirmPasswordTemp;
+
+                ViewBag.ErrorModel = errorModel;
+
+
                 return View("Register", registerViewModel);
             }
 
-            Log.Debug($"Validation [Register] Done!");
+            if (_environment.IsDevelopment())
+            {
+                Log.Debug($"Validation [Register] Done!");
+            }
 
             var user = new ApplicationUser
             {
@@ -198,7 +228,10 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpGet]
         public async Task<IActionResult> LogOut(string logOutId)
         {
-            Log.Debug($"LogOut ID:\t{logOutId}");
+            if (_environment.IsDevelopment())
+            {
+                Log.Debug("LogOut ID:\t{logOutId}", logOutId);
+            }
 
             await _signInManager.SignOutAsync();
 
