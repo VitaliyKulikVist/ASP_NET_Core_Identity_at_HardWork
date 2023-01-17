@@ -34,38 +34,11 @@ namespace IdentityServer_FrontEnd.Controllers
         }
 
         [HttpGet]
-        public IActionResult MainPage(string? returnUrl)
-        {
-            if (_environment.IsDevelopment())
-            {
-                Log.Debug("MainPage [Get] RedirectURL:{returnURL}",
-                    string.IsNullOrWhiteSpace(returnUrl) ? "Empty" : returnUrl);
-            }
-
-            var viewModel = new LoginViewModel
-            {
-                ReturnUrl = returnUrl
-            };
-
-            return View("MainPage", viewModel);
-        }
-
-        [HttpPost]
         public async Task<IActionResult> MainPage(LoginViewModel дoginViewModel)
         {
             if (_environment.IsDevelopment())
             {
                 Log.Debug("Try MainPage [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", дoginViewModel.UserName);
-            }
-
-            await _validation.ValidateAsync(дoginViewModel, ModelState);
-
-            if (!ModelState.IsValid)
-            {
-                var errorModel = new ErrorViewModel();
-                //errorModel.UserNameErrors = new List<string>();
-                ViewBag.ErrorModel = errorModel;
-                return View("MainPage", дoginViewModel);
             }
 
             if (_environment.IsDevelopment())

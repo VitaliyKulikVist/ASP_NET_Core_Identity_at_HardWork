@@ -1,0 +1,13 @@
+﻿@model LoginViewModel
+<head>
+    <link href=@Url.Content("~/styles/app.css") rel="stylesheet" type="text/css" />
+</head>
+<form asp-controller="Pages" asp-action="MainPage" metod="get">
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div class="heared">User Name: @Model.UserName</div>
+    <div class="block">
+        <button type="submit" class="button" asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
+            Log Out
+        </button>
+    </div>
+</form>

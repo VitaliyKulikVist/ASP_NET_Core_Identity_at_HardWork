@@ -113,7 +113,8 @@ namespace IdentityServer_FrontEnd.Controllers
 
                 ModelState.AddModelError(string.Empty, "User not found");
 
-                return View("Login", loginViewModel);
+                return View("Login", loginViewModel );
+                //return RedirectToAction("Register", "Auth", loginViewModel);
             }
 
             //HttpContext.User.
@@ -127,9 +128,11 @@ namespace IdentityServer_FrontEnd.Controllers
                 Log.Information("USER\t{UserName}\t Found!", loginViewModel.UserName);
             }
 
-            if (result.Succeeded && !string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl)) 
+            if (result.Succeeded)// && !string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl)) 
             {
-                return Redirect(loginViewModel.ReturnUrl!);
+                //return Redirect(loginViewModel.ReturnUrl!);
+
+                return RedirectToAction("MainPage", "Pages", loginViewModel);
             }
 
             ModelState.AddModelError(string.Empty, "Login error");
