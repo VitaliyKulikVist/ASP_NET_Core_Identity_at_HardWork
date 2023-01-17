@@ -10,7 +10,7 @@ namespace IdentityServer_DAL_MySQL.MenegmentData
 {
     public class DeleteData
     {
-        public static void DeleteAllUsers(string connectionString)
+        public static async void DeleteAllUsers(string connectionString)
         {
             var services = new ServiceCollection();
             services.AddLogging();
@@ -58,16 +58,17 @@ namespace IdentityServer_DAL_MySQL.MenegmentData
                         }
                     }
 
-                    if(userMgr.Users.Count() > 0)
+                    if (userMgr.Users.Count() > 0)
                     {
                         Console.WriteLine("Є ще користувачі які потрібно видалити які не входять в список");
 
                         foreach (var user in userMgr.Users)
                         {
-                            var result = userMgr.DeleteAsync(user).Result;
-                            if (!result.Succeeded)
+                            var identityResult = await userMgr.DeleteAsync(user);
+
+                            if (identityResult != null && !identityResult.Succeeded)
                             {
-                                throw new Exception(result.Errors.First().Description);
+                                throw new Exception(identityResult.Errors.First().Description);
                             }
                         }
                     }

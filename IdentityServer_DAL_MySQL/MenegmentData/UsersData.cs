@@ -10,10 +10,10 @@ namespace IdentityServer_DAL_MySQL.MenegmentData
                 "alica","Pass123$"
             },
             {
-                "bob","Pass123$"
+                "bobik","Pass123$"
             },
             {
-                "Vitaliy","Qwerty12345678!@#$%^&*"
+                "Vitaliy","Qwe123^&*"
             }
         };
     }

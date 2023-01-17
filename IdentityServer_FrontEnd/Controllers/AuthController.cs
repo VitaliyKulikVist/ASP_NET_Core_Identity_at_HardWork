@@ -113,15 +113,44 @@ namespace IdentityServer_FrontEnd.Controllers
 
                 ModelState.AddModelError(string.Empty, "User not found");
 
-                return View("Login", loginViewModel );
-                //return RedirectToAction("Register", "Auth", loginViewModel);
+                return View("Login", loginViewModel);
             }
 
-            //HttpContext.User.
+            if (_environment.IsDevelopment())
+            {
+                Log.Information("Content Length before {value}\t Cookies Count = {Cookies}", HttpContext.Request.ContentLength, HttpContext.Request.Cookies.Count);
+
+                if(HttpContext.Request.Cookies.Count > 0)
+                {
+                    foreach (var cookie in HttpContext.Request.Cookies)
+                    {
+                        if (cookie.Key == "idsrv.session" || cookie.Key == "Identity.Test_Cookie_Name")
+                        {
+                            Log.Information("Cookie before= {Key}\n {Value}", cookie.Key, cookie.Value);
+                        }
+                    }
+                }
+            }
 
             //isPersistent - параметр відноситься до Cookie
             //lockoutOnFailure - параметр відповідає за те, щоб заблокувати акаунт якщо було декілька не вдалих спроб
-            var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, isPersistent: true, false);
+
+            if (_environment.IsDevelopment())
+            {
+                Log.Information("Content Length after {value}\t Cookies Count = {Cookies}", HttpContext.Request.ContentLength, HttpContext.Request.Cookies.Count);
+
+                if (HttpContext.Request.Cookies.Count > 0)
+                {
+                    foreach (var cookie in HttpContext.Request.Cookies)
+                    {
+                        if(cookie.Key == "idsrv.session" || cookie.Key == "Identity.Test_Cookie_Name")
+                        {
+                            Log.Information("Cookie after= {Key}\n {Value}", cookie.Key, cookie.Value);
+                        }
+                    }
+                }
+            }
 
             if (result.Succeeded && _environment.IsDevelopment())
             {

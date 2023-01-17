@@ -6,8 +6,10 @@
     <input type="hidden" asp-for="ReturnUrl" />
     <div class="heared">User Name: @Model.UserName</div>
     <div class="block">
-        <button type="submit" class="button" asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
-            Log Out
+        <button type="submit" class="button">
+            <a asp-controller="Auth" asp-action="LogOut"> @*asp-route-returnUrl="@Model.ReturnUrl">*@
+                Log Out
+            </a>
         </button>
     </div>
 </form>

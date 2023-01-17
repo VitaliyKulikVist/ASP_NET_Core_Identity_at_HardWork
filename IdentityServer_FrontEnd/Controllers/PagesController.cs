@@ -34,11 +34,11 @@ namespace IdentityServer_FrontEnd.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> MainPage(LoginViewModel дoginViewModel)
+        public async Task<IActionResult> MainPage(LoginViewModel loginViewModel)
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try MainPage [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", дoginViewModel.UserName);
+                Log.Debug("Try MainPage [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", loginViewModel.UserName);
             }
 
             if (_environment.IsDevelopment())
@@ -46,22 +46,22 @@ namespace IdentityServer_FrontEnd.Controllers
                 Log.Debug("Validation [MainPage] Done!");
             }
 
-            var user = await _userManager.FindByNameAsync(дoginViewModel.UserName);
+            var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
             if (user == null)
             {
                 if (_environment.IsDevelopment())
                 {
-                    Log.Debug("User NOT found at:\tname: {UserName}", дoginViewModel.UserName);
+                    Log.Debug("User NOT found at:\tname: {UserName}", loginViewModel.UserName);
                 }
 
                 ModelState.AddModelError(string.Empty, "User not found");
 
-                return View("Login", дoginViewModel);
+                return View("Login", loginViewModel);
             }
 
             ////
 
-            return View("MainPage", дoginViewModel);
+            return View("MainPage", loginViewModel);
         }
     }
 }
