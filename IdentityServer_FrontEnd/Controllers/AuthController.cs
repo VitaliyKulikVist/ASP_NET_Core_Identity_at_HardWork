@@ -9,6 +9,7 @@ using IdentityServer_Common.Infrastructure.Interface;
 using IdentityServer_FrontEnd.ViewModels;
 using IdentityServer_DAL.Entity.ViewModel.Auth;
 using System.Linq;
+using System.Security.Claims;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -59,8 +60,8 @@ namespace IdentityServer_FrontEnd.Controllers
                     string.IsNullOrWhiteSpace(returnUrl) ? "Empty" : returnUrl);
             }
 
-            var viewModel = new LoginViewModel 
-            { 
+            var viewModel = new LoginViewModel
+            {
                 ReturnUrl = returnUrl
             };
 
@@ -161,7 +162,7 @@ namespace IdentityServer_FrontEnd.Controllers
             {
                 //return Redirect(loginViewModel.ReturnUrl!);
 
-                return RedirectToAction("MainPage", "Pages", loginViewModel);
+                return RedirectToAction("MainPage", "Pages", new MainPageViewModel().GetMainPage(loginViewModel));
             }
 
             ModelState.AddModelError(string.Empty, "Login error");
@@ -184,9 +185,9 @@ namespace IdentityServer_FrontEnd.Controllers
                     string.IsNullOrWhiteSpace(returnUrl) ? "Empty" : returnUrl);
             }
 
-            var vievModeel = new RegisterViewModel 
-            { 
-                ReturnUrl = returnUrl 
+            var vievModeel = new RegisterViewModel
+            {
+                ReturnUrl = returnUrl
             };
 
             return View("Register", vievModeel);
@@ -244,7 +245,8 @@ namespace IdentityServer_FrontEnd.Controllers
                 //Робимо вхід цього користувача
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return Redirect(registerViewModel.ReturnUrl!);
+                return RedirectToAction("MainPage", "Pages", new MainPageViewModel().GetMainPage(registerViewModel));
+                //return Redirect(registerViewModel.ReturnUrl!);
             }
 
             ModelState.AddModelError(string.Empty, "Error creating user");
@@ -268,6 +270,11 @@ namespace IdentityServer_FrontEnd.Controllers
             await _signInManager.SignOutAsync();
 
             var logOutRequest = await _interactionService.GetLogoutContextAsync(logOutId);
+
+            if (string.IsNullOrWhiteSpace(logOutRequest.PostLogoutRedirectUri))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
             return Redirect(logOutRequest.PostLogoutRedirectUri);
         }

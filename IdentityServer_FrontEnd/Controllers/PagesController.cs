@@ -34,11 +34,11 @@ namespace IdentityServer_FrontEnd.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> MainPage(LoginViewModel loginViewModel)
+        public async Task<IActionResult> MainPage(MainPageViewModel mainPageViewModel)
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try MainPage [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", loginViewModel.UserName);
+                Log.Debug("Try MainPage [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", mainPageViewModel.UserName);
             }
 
             if (_environment.IsDevelopment())
@@ -46,22 +46,33 @@ namespace IdentityServer_FrontEnd.Controllers
                 Log.Debug("Validation [MainPage] Done!");
             }
 
-            var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
-            if (user == null)
+            if(mainPageViewModel != null && !string.IsNullOrWhiteSpace(mainPageViewModel.UserName))
             {
-                if (_environment.IsDevelopment())
+                var user = await _userManager.FindByNameAsync(mainPageViewModel.UserName);
+                if (user == null)
                 {
-                    Log.Debug("User NOT found at:\tname: {UserName}", loginViewModel.UserName);
+                    if (_environment.IsDevelopment())
+                    {
+                        Log.Debug("User NOT found at:\tname: {UserName}", mainPageViewModel.UserName);
+                    }
+
+                    ModelState.AddModelError(string.Empty, "User not found");
+
+                    return View("Login", mainPageViewModel);
                 }
+            }
 
-                ModelState.AddModelError(string.Empty, "User not found");
-
-                return View("Login", loginViewModel);
+            else
+            {
+                mainPageViewModel = new MainPageViewModel
+                {
+                    UserName = "TestUserName"
+                };
             }
 
             ////
 
-            return View("MainPage", loginViewModel);
+            return View("MainPage", mainPageViewModel);
         }
     }
 }

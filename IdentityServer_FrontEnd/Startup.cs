@@ -30,6 +30,9 @@ namespace IdentityServer_FrontEnd
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();//Потім не забути видалити
+
             services.AddControllersWithViews(conf =>
             {
                 // Якщо нема ? не буде рахувати помилкою

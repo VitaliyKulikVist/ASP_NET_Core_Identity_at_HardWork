@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using IdentityServer_DAL.Infrastructure.Interface;
+using System.ComponentModel.DataAnnotations;
 
 namespace IdentityServer_DAL.Entity.ViewModel.Auth
 {
     /// <summary>
     /// Клас являє собою сутність для реєстрації користувача
     /// </summary>
-    public class RegisterViewModel
+    public class RegisterViewModel : IAuthViewModel
     {
         public string UserName { get; set; } = null!;
 
