@@ -46,7 +46,7 @@ namespace IdentityServer_FrontEnd.Controllers
                 Log.Debug("Validation [MainPage] Done!");
             }
 
-            if(mainPageViewModel != null && !string.IsNullOrWhiteSpace(mainPageViewModel.UserName))
+            if(mainPageViewModel != null && !string.IsNullOrWhiteSpace(mainPageViewModel.UserName))//Заглушка, потім забрати
             {
                 var user = await _userManager.FindByNameAsync(mainPageViewModel.UserName);
                 if (user == null)
@@ -61,7 +61,7 @@ namespace IdentityServer_FrontEnd.Controllers
                     return View("Login", mainPageViewModel);
                 }
             }
-
+            //Заглушка потім забрати
             else
             {
                 mainPageViewModel = new MainPageViewModel

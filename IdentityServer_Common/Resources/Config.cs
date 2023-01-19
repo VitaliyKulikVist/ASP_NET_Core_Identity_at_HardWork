@@ -120,7 +120,7 @@ namespace IdentityServer_Common.Resources
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedScopes = { IdentityServerScopeConstants.ApiScope_Level1 },
-                    AllowedCorsOrigins = { "https://localhost:7249" }
+                    AllowedCorsOrigins = { "https://localhost:7249" },
                 },
 
                 new Client
@@ -139,7 +139,8 @@ namespace IdentityServer_Common.Resources
                     //Набір адрес яким дозволено використовувати IdentityServer(іншими словами набір арі)
                     AllowedCorsOrigins = { "https://localhost:7249" },
                     //Адреса куди відбувається перенаправлення після виходу з клієнтського застосунку
-                    PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
+                    //PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44300/Auth/Login" },
 
                     //FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
                     

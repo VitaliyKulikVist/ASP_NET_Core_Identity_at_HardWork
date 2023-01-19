@@ -40,6 +40,7 @@ namespace Client
                 goto Start;
             }
         }
+
         private static async Task SendRequestAtIdentityServerAtTryGetAccesFromApi1Async(string clientID, string clientSecret)
         {
             var client = new HttpClient();
@@ -58,13 +59,13 @@ namespace Client
             {
                 Address = disco.TokenEndpoint,
                 ClientId = clientID,
-                ClientSecret = clientSecret
+                ClientSecret = clientSecret,
             });
 
             if (tokenResponse.IsError)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error =" + tokenResponse.Error);
+                Console.WriteLine("Error= " + tokenResponse.Error);
                 Console.ResetColor();
 
                 return;
@@ -80,8 +81,6 @@ namespace Client
             Console.WriteLine("\t\tIdentity");
             await Switches1(tokenResponse);
 
-            Console.WriteLine("\t\tWeatherForecast");
-            await Switches2(tokenResponse);
 
             Console.ResetColor();
         }
@@ -112,13 +111,6 @@ namespace Client
         private static Task Switches1(IdentityModel.Client.TokenResponse tokenResponse)
         {
             string url = "https://localhost:7249/identity";
-
-            return GetResponseFromURLAsync(url, tokenResponse);
-        }
-
-        private static Task Switches2(IdentityModel.Client.TokenResponse tokenResponse)
-        {
-            string url = "https://localhost:7249/WeatherForecast";
 
             return GetResponseFromURLAsync(url, tokenResponse);
         }
