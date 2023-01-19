@@ -1,49 +1,42 @@
-﻿.input
+﻿.input 
 {
     font-size: 16px;
     font-family: Arial;
-    background-color: #fff;
-    width: 100%;
+    background-color: #140e97;
+    caret-color: transparent; /* встановлює колір каретки вставки */
+    width: 30%;
+    color: white;
 }
 
-.heared {
-    font-size: 30px;
-    font-family: Arial;
-    color: #332600;
-    text-align: center;
-}
-
-.button
+.main_pages_text 
 {
     font-size: 16px;
-    background-color: #a191bd;
-    border-radius: 4px;
-    color: #332600;
     font-family: Arial;
-    width: 100%;
+    color: white;
 }
 
-.block
-{
-    margin-top: 10px;
-}
-
-.switch-button 
-{
-    margin-top: 8px; 
-    font-size: 8px;
-    border-radius: 4px;
-    color: #332600;
-    font-family: Arial;
-    display: inline-block;
-    text-align: center;
-    width: 100%; 
-}
-
-.output 
+.heared 
 {
     font-size: 30px;
     font-family: Arial;
-    color: #332600;
+    color: white;
     text-align: center;
+}
+
+.block {
+    margin-top: 10px; /* встановлює область полів у верхній частині елемента */
+    font-family: Arial;
+    width: 100%;
+    text-align: center;
+}
+
+.output_block {
+    margin-top: 8px;
+    font-size: 30px;
+    font-family: Arial;
+    text-align:right;
+}
+
+.body {
+    background: repeating-linear-gradient(#000000,#030748); /* встановлює всі властивості стилю фону одночасно, такі як колір, зображення, походження та розмір або метод повторення */
 }

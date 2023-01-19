@@ -4,14 +4,22 @@
 
 <head>
     <link href=@Url.Content("~/styles/app.css") rel="stylesheet" type="text/css" />
+    <link href=@Url.Content("~/styles/animation.css") rel="stylesheet" type="text/css" />
+    <link href=@Url.Content("~/styles/button.css") rel="stylesheet" type="text/css" />
 </head>
-<form asp-controller="Pages" asp-action="MainPage" metod="get">
-    <div class="heared">Hello @Model.UserName</div>
-    <div class="block">
-        <button type="submit" class="button">
-            <a asp-controller="Auth" asp-action="LogOut" asp-route-logOutId="@Model.UserName">
-                Log Out
-            </a>
-        </button>
+<body class="body">
+    <div class="heared">
+            <form asp-controller="Pages" asp-action="MainPage" metod="get">
+                Hello @Model.UserName
+            </form>
     </div>
-</form>
+</body>
+<footer>
+    <div class="output_block">
+            <a asp-controller="Auth" asp-action="LogOut" asp-route-logOutId="@Model.UserName">
+                <button type="submit" class="button">
+                    Log Out
+                </button>
+            </a>
+    </div>
+</footer>
