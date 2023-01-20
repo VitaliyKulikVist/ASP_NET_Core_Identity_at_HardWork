@@ -14,9 +14,6 @@ namespace IdentityServer_FrontEnd
 
             AdditionalClasses.AddAndConfiguredLogger();
 
-            //AdditionalClasses.OpenBrowser("https://localhost:7216/Auth/Login");
-            //AdditionalClasses.OpenBrowser("https://localhost:7216/Auth/Register");
-
             host.Run();
         }
 

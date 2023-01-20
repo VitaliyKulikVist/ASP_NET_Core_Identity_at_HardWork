@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using FluentValidation;
 using IdentityServer_Common.Extensions;
 using IdentityServer_DAL.Entity.ViewModel.Auth;
+using IdentityServer_Common.Constants;
 
 namespace IdentityServer_FrontEnd
 {
@@ -44,26 +45,26 @@ namespace IdentityServer_FrontEnd
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                var connetionString = Configuration.GetConnectionString("DefaultConnectionMySQL");
+                var connetionString = Configuration.GetConnectionString(FrontEndConstants.StringConnectionMySQL);
                 options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
-                config.Password.RequiredLength = 6;//Мінімальна довжина пароля
+                config.Password.RequiredLength = FluentValidationConstants.MinimumLengthPassword;//Мінімальна довжина пароля
                 config.Password.RequireDigit = false;//Не обов'язково використовувати ЦИФРИ
                 config.Password.RequireNonAlphanumeric = false;//Не обов'язково використовувати СИМВОЛИ
                 config.Password.RequireUppercase = false;//Не обов'язково використовувати ВЕЛИКІ букви
-
+                config.Password.RequireLowercase = false;//чи паролі повинні містити символ ASCII нижнього регістру
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(config =>
             {
-                config.Cookie.Name = "Identity.Test_Cookie_Name";
-                config.LoginPath = new PathString("/Auth/Login");
-                config.LogoutPath = new PathString("/Auth/Logout");
+                config.Cookie.Name = FrontEndConstants.CookieName;
+                config.LoginPath = new PathString($"/{FrontEndConstants.ControllerNameAuth}/{FrontEndConstants.NamePageLogin}");
+                config.LogoutPath = new PathString($"/{FrontEndConstants.ControllerNameAuth}/LogOut");
             });
 
 

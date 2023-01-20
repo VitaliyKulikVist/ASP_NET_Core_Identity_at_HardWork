@@ -12,6 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using IdentityModel;
 using System;
+using IdentityServer_Common.Constants;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -36,6 +37,8 @@ namespace IdentityServer_FrontEnd.Controllers
 
         private readonly IHostEnvironment _environment;
 
+        private ErrorViewModel errorModel = null!;
+
         public AuthController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
@@ -58,7 +61,7 @@ namespace IdentityServer_FrontEnd.Controllers
         {
             if( _environment.IsDevelopment())
             {
-                Log.Debug("Login [Get] RedirectURL:{returnURL}", 
+                Log.Debug("{Login} [Get] RedirectURL:{returnURL}", FrontEndConstants.NamePageLogin,
                     string.IsNullOrWhiteSpace(returnUrl) ? "Empty" : returnUrl);
             }
 
@@ -67,7 +70,7 @@ namespace IdentityServer_FrontEnd.Controllers
                 ReturnUrl = returnUrl
             };
 
-            return View("Login", viewModel);
+            return View(FrontEndConstants.NamePageLogin, viewModel);
         }
 
         /// <summary>
@@ -76,11 +79,13 @@ namespace IdentityServer_FrontEnd.Controllers
         /// <param name="loginViewModel"></param>
         /// <returns>Буде повертати туди, звідки прийшов запит</returns>
         [HttpPost]
-        public async Task<IActionResult> Login (LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try Login [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", loginViewModel.UserName,
+                Log.Debug("Try {Login} [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}",
+                    FrontEndConstants.NamePageLogin,
+                    loginViewModel.UserName,
                     loginViewModel.Password,
                     string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl) ? "Empty": loginViewModel.ReturnUrl);
             }
@@ -91,12 +96,12 @@ namespace IdentityServer_FrontEnd.Controllers
             {
                 SaveValidateInformationAtDynamic();
 
-                return View("Login", loginViewModel);
+                return View(FrontEndConstants.NamePageLogin, loginViewModel);
             }
 
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Validation [Login] Done!");
+                Log.Debug("Validation [{Login}] Done!", FrontEndConstants.NamePageLogin);
             }
 
             var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
@@ -105,12 +110,14 @@ namespace IdentityServer_FrontEnd.Controllers
             {
                 if (_environment.IsDevelopment())
                 {
-                    Log.Debug("User NOT found at:\tname: {UserName}\tpassword: {Password}", loginViewModel.UserName, loginViewModel.Password);
+                    Log.Debug("User NOT found at:\tname: {UserName}\tpassword: {Password}",
+                        loginViewModel.UserName,
+                        loginViewModel.Password);
                 }
 
                 ModelState.AddModelError(string.Empty, "User not found");
 
-                return View("Login", loginViewModel);
+                return View(FrontEndConstants.NamePageLogin, loginViewModel);
             }
 
             if (_environment.IsDevelopment())
@@ -158,12 +165,12 @@ namespace IdentityServer_FrontEnd.Controllers
             {
                 //return Redirect(loginViewModel.ReturnUrl!);
 
-                return RedirectToAction("MainPage", "Pages", new MainPageViewModel().GetMainPage(loginViewModel));
+                return RedirectToAction(FrontEndConstants.NamePageMainPage, FrontEndConstants.ControllerNamePages, new MainPageViewModel().GetMainPage(loginViewModel));
             }
 
-            ModelState.AddModelError(string.Empty, "Login error");
+            ModelState.AddModelError(string.Empty, $"{FrontEndConstants.NamePageLogin} error");
 
-            return View("Login", loginViewModel);
+            return View(FrontEndConstants.NamePageLogin, loginViewModel);
         }
 
         /// <summary>
@@ -176,7 +183,8 @@ namespace IdentityServer_FrontEnd.Controllers
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Register [Get] RedirectURL:{returnURL}",
+                Log.Debug("{Register} [Get] RedirectURL:{returnURL}",
+                    FrontEndConstants.NamePageRegister,
                     string.IsNullOrWhiteSpace(returnUrl) ? "Empty" : returnUrl);
             }
 
@@ -185,7 +193,7 @@ namespace IdentityServer_FrontEnd.Controllers
                 ReturnUrl = returnUrl
             };
 
-            return View("Register", vievModeel);
+            return View(FrontEndConstants.NamePageRegister, vievModeel);
         }
 
         /// <summary>
@@ -198,7 +206,8 @@ namespace IdentityServer_FrontEnd.Controllers
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try Register [Post] user:\tName: {UserName}\tPassword: {Password}\tConfirmPassword: {ConfirmPassword}\nRedirectURL:\t{ReturnUrl}",
+                Log.Debug("Try {Register} [Post] user:\tName: {UserName}\tPassword: {Password}\tConfirmPassword: {ConfirmPassword}\nRedirectURL:\t{ReturnUrl}",
+                    FrontEndConstants.NamePageRegister,
                     registerViewModel.UserName,
                     registerViewModel.Password,
                     registerViewModel.ConfirmPassword,
@@ -211,12 +220,12 @@ namespace IdentityServer_FrontEnd.Controllers
             {
                 SaveValidateInformationAtDynamic();
 
-                return View("Register", registerViewModel);
+                return View(FrontEndConstants.NamePageRegister, registerViewModel);
             }
 
             if (_environment.IsDevelopment())
             {
-                Log.Debug($"Validation [Register] Done!");
+                Log.Debug("Validation [{Register}] Done!", FrontEndConstants.NamePageRegister);
             }
 
             var unit = _userManager.FindByNameAsync(registerViewModel.UserName).Result;
@@ -237,7 +246,10 @@ namespace IdentityServer_FrontEnd.Controllers
                     //Робимо вхід цього користувача
                     await _signInManager.SignInAsync(unit, isPersistent: true);
 
-                    return RedirectToAction("MainPage", "Pages", new MainPageViewModel().GetMainPage(registerViewModel));
+                    return RedirectToAction(
+                        FrontEndConstants.NamePageMainPage,                 FrontEndConstants.ControllerNamePages,
+                        new MainPageViewModel().GetMainPage(registerViewModel));
+
                     //return Redirect(registerViewModel.ReturnUrl!);
                 }
 
@@ -257,12 +269,10 @@ namespace IdentityServer_FrontEnd.Controllers
 
                     if (result.Errors.Count() > 0)
                     {
-                        errorModel.IdentityError = result.Errors;
-
-                        ViewBag.ErrorModel = errorModel;
+                        SaveValidateInformationAtDynamic(result);
                     }
 
-                    return View("Register", registerViewModel);
+                    return View(FrontEndConstants.NamePageRegister, registerViewModel);
                 }
 
                 result = _userManager.AddClaimsAsync(unit, new Claim[]{
@@ -280,7 +290,7 @@ namespace IdentityServer_FrontEnd.Controllers
 
             ModelState.AddModelError(string.Empty, "Error creating user");
 
-            return View("Register", registerViewModel);
+            return View(FrontEndConstants.NamePageRegister, registerViewModel);
         }
 
         /// <summary>
@@ -302,15 +312,15 @@ namespace IdentityServer_FrontEnd.Controllers
 
             if (string.IsNullOrWhiteSpace(logOutRequest.PostLogoutRedirectUri))
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction(
+                    FrontEndConstants.NamePageLogin,
+                    FrontEndConstants.ControllerNameAuth);
             }
 
             return Redirect(logOutRequest.PostLogoutRedirectUri);
         }
 
-
-        private ErrorViewModel errorModel = new ErrorViewModel();
-        private void SaveValidateInformationAtDynamic()
+        private void SaveValidateInformationAtDynamic(IdentityResult result = null!)
         {
             var errors = ModelState.Values.SelectMany(s => s.Errors);
             var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
@@ -319,6 +329,11 @@ namespace IdentityServer_FrontEnd.Controllers
             errorModel.PasswordErrors = passwordTemp;
             var confirmPasswordTemp = errors.Where(s => s.ErrorMessage.Contains("Confirm Password"));
             errorModel.ConfirmPasswordErrors = confirmPasswordTemp;
+
+            if (result != null)
+            {
+                errorModel.IdentityError = result.Errors;
+            }
 
             ViewBag.ErrorModel = errorModel;
         }

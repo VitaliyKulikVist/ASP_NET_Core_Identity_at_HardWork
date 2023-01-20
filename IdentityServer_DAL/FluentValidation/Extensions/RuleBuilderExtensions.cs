@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using IdentityServer_Common.Constants;
 
 namespace IdentityServer_DAL.FluentValidation.Extensions
 {
@@ -8,8 +9,8 @@ namespace IdentityServer_DAL.FluentValidation.Extensions
         {
             var options = ruleBuilder
                           .NotEmpty()
-                          .MinimumLength(4)
-                          .MaximumLength(10);
+                          .MinimumLength(FluentValidationConstants.MinimumLengthUserName)
+                          .MaximumLength(FluentValidationConstants.MaximumLengthUserName);
 
             return options;
         }
@@ -18,9 +19,9 @@ namespace IdentityServer_DAL.FluentValidation.Extensions
         {
             var options = ruleBuilder
                           .NotEmpty()
-                          .MinimumLength(3)
-                          .MaximumLength(16);
-                          //.Matches("^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$").WithMessage("regex error");
+                          .MinimumLength(FluentValidationConstants.MinimumLengthPassword)
+                          .MaximumLength(FluentValidationConstants.MaximumLengthPassword);
+                          //.Matches(FluentValidationConstants.PasswordRegEx).WithMessage("regex error");
 
             return options;
         }
