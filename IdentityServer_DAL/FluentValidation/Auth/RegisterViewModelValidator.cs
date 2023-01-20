@@ -9,15 +9,12 @@ namespace IdentityServer_DAL.FluentValidation.Auth
         public RegisterViewModelValidator() 
         {
             RuleFor(x => x.UserName)
-                .UserName()
-                .WithMessage("Please specify a User Name.");
+                .UserName();
             RuleFor(x => x.Password)
-                .Password()
-                .WithMessage("Please specify a Password.");
+                .Password();
             RuleFor(x => x.ConfirmPassword)
                 .Password()
-                .Equal(customer => customer.Password)
-                .WithMessage("Please confirm a Password.");
+                .Equal(customer => customer.Password);
         }
     }
 }

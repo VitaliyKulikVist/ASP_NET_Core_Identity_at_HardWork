@@ -39,7 +39,7 @@ namespace IdentityServer_Common.Services
                 {
                     foreach (var error in validationResult.Errors)
                     {
-                        _logger.LogDebug($"Validation [Login] Error:\t {error}");
+                        _logger.LogDebug($"Validation [{modelStateDictionary.Keys}] Error:\t {error}");
                     }
                 }
             }

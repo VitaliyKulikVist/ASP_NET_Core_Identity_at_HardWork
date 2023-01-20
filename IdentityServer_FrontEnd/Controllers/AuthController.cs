@@ -10,6 +10,8 @@ using IdentityServer_FrontEnd.ViewModels;
 using IdentityServer_DAL.Entity.ViewModel.Auth;
 using System.Linq;
 using System.Security.Claims;
+using IdentityModel;
+using System;
 
 namespace IdentityServer_FrontEnd.Controllers
 {
@@ -87,14 +89,7 @@ namespace IdentityServer_FrontEnd.Controllers
 
             if (!ModelState.IsValid)
             {
-                var errorModel = new ErrorViewModel();
-                var errors = ModelState.Values.SelectMany(s => s.Errors);
-                var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
-                errorModel.UserNameErrors = userNameTemp;
-                var passwordTemp = errors.Where(s => s.ErrorMessage.Contains(nameof(loginViewModel.Password)));
-                errorModel.PasswordErrors = passwordTemp;
-
-                ViewBag.ErrorModel = errorModel;//Не можна використовувати динамік, в подальшому переробити
+                SaveValidateInformationAtDynamic();
 
                 return View("Login", loginViewModel);
             }
@@ -105,6 +100,7 @@ namespace IdentityServer_FrontEnd.Controllers
             }
 
             var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
+
             if (user == null)
             {
                 if (_environment.IsDevelopment())
@@ -178,7 +174,6 @@ namespace IdentityServer_FrontEnd.Controllers
         [HttpGet]
         public IActionResult Register (string? returnUrl)
         {
-
             if (_environment.IsDevelopment())
             {
                 Log.Debug("Register [Get] RedirectURL:{returnURL}",
@@ -192,6 +187,7 @@ namespace IdentityServer_FrontEnd.Controllers
 
             return View("Register", vievModeel);
         }
+
         /// <summary>
         /// Метод необхідний для дій реєстрації, ПІСЛЯ заповнення форми
         /// </summary>
@@ -213,17 +209,7 @@ namespace IdentityServer_FrontEnd.Controllers
 
             if (!ModelState.IsValid)
             {
-                var errorModel = new ErrorViewModel();
-                var errors = ModelState.Values.SelectMany(s => s.Errors);
-                var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
-                errorModel.UserNameErrors = userNameTemp;
-                var passwordTemp = errors.Where(s => s.ErrorMessage.Contains("Password") && !s.ErrorMessage.Contains("Confirm"));
-                errorModel.PasswordErrors = passwordTemp;
-                var confirmPasswordTemp = errors.Where(s => s.ErrorMessage.Contains("Confirm Password"));
-                errorModel.ConfirmPasswordErrors = confirmPasswordTemp;
-
-                ViewBag.ErrorModel = errorModel;
-
+                SaveValidateInformationAtDynamic();
 
                 return View("Register", registerViewModel);
             }
@@ -233,20 +219,63 @@ namespace IdentityServer_FrontEnd.Controllers
                 Log.Debug($"Validation [Register] Done!");
             }
 
-            var user = new ApplicationUser
+            var unit = _userManager.FindByNameAsync(registerViewModel.UserName).Result;
+            if (unit == null)
             {
-                UserName =  registerViewModel.UserName
-            };
+                unit = new ApplicationUser
+                {
+                    UserName = registerViewModel.UserName,
+                    Email = $"{registerViewModel.UserName}Smith@email.com",
+                    Description = $"Опис користувача {registerViewModel.UserName}",
+                    EmailConfirmed = true,
+                };
 
-            //Створюємо користувача за допомогою "userManager"
-            var result = await _userManager.CreateAsync(user, registerViewModel.Password);
-            if (result.Succeeded) 
-            {
-                //Робимо вхід цього користувача
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                var result = _userManager.CreateAsync(unit, registerViewModel.Password).Result;
 
-                return RedirectToAction("MainPage", "Pages", new MainPageViewModel().GetMainPage(registerViewModel));
-                //return Redirect(registerViewModel.ReturnUrl!);
+                if (result.Succeeded)
+                {
+                    //Робимо вхід цього користувача
+                    await _signInManager.SignInAsync(unit, isPersistent: true);
+
+                    return RedirectToAction("MainPage", "Pages", new MainPageViewModel().GetMainPage(registerViewModel));
+                    //return Redirect(registerViewModel.ReturnUrl!);
+                }
+
+                else
+                if (!result.Succeeded)
+                {
+                    if (_environment.IsDevelopment())
+                    {
+                        foreach (var item in result.Errors)
+                        {
+                            Log.Debug("Can`t create new user, because:\t {error}", item.Description);
+                        }
+                    }
+
+                    //var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value!.Errors.Count > 0) select new { Title = modelstate.Key };
+
+
+                    if (result.Errors.Count() > 0)
+                    {
+                        errorModel.IdentityError = result.Errors;
+
+                        ViewBag.ErrorModel = errorModel;
+                    }
+
+                    return View("Register", registerViewModel);
+                }
+
+                result = _userManager.AddClaimsAsync(unit, new Claim[]{
+                            new Claim(JwtClaimTypes.Name, $"{registerViewModel.UserName} Smith"),
+                            new Claim(JwtClaimTypes.GivenName, registerViewModel.UserName),
+                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                            new Claim(JwtClaimTypes.WebSite, $"http://{registerViewModel.UserName}.com"),
+                        }).Result;
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
             }
 
             ModelState.AddModelError(string.Empty, "Error creating user");
@@ -277,6 +306,21 @@ namespace IdentityServer_FrontEnd.Controllers
             }
 
             return Redirect(logOutRequest.PostLogoutRedirectUri);
+        }
+
+
+        private ErrorViewModel errorModel = new ErrorViewModel();
+        private void SaveValidateInformationAtDynamic()
+        {
+            var errors = ModelState.Values.SelectMany(s => s.Errors);
+            var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
+            errorModel.UserNameErrors = userNameTemp;
+            var passwordTemp = errors.Where(s => s.ErrorMessage.Contains("Password") && !s.ErrorMessage.Contains("Confirm"));
+            errorModel.PasswordErrors = passwordTemp;
+            var confirmPasswordTemp = errors.Where(s => s.ErrorMessage.Contains("Confirm Password"));
+            errorModel.ConfirmPasswordErrors = confirmPasswordTemp;
+
+            ViewBag.ErrorModel = errorModel;
         }
     }
 }

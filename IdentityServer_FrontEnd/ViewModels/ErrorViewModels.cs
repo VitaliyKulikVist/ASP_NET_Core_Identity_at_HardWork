@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 
 namespace IdentityServer_FrontEnd.ViewModels
@@ -10,5 +11,7 @@ namespace IdentityServer_FrontEnd.ViewModels
         public IEnumerable<ModelError>? PasswordErrors { get; set; }
 
         public IEnumerable<ModelError>? ConfirmPasswordErrors { get; set; }
+
+        public IEnumerable<IdentityError>? IdentityError { get; set; }
     }
 }

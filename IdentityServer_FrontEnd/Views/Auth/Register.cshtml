@@ -13,13 +13,26 @@
     <form asp-controller="Auth" asp-action="Register" metod="post">
         <input type="hidden" asp-for="ReturnUrl" />
         <div class="heared">Sign Up</div>
+        <div style="text-align:center; font-size:30px;">
+            @if (errorModel != null && errorModel.IdentityError != null)
+            {
+                foreach (var item in errorModel.IdentityError)
+                {
+                    <div>
+                        <label class="main_pages_text">
+                            @item.Description
+                        </label>
+                    </div>
+                }
+            }
+        </div>
         <div class="block">
             @if (errorModel != null && errorModel.UserNameErrors != null)
             {
                 foreach (var item in errorModel.UserNameErrors)
                 {
                     <div>
-                        <label>
+                        <label class="main_pages_text">
                             @item.ErrorMessage
                         </label>
                     </div>
@@ -34,7 +47,7 @@
                 foreach (var item in errorModel.PasswordErrors)
                 {
                     <div>
-                        <label>
+                        <label class="main_pages_text">
                             @item.ErrorMessage
                         </label>
                     </div>
@@ -49,7 +62,7 @@
                 foreach (var item in errorModel.ConfirmPasswordErrors)
                 {
                     <div>
-                        <label>
+                        <label class="main_pages_text">
                             @item.ErrorMessage
                         </label>
                     </div>

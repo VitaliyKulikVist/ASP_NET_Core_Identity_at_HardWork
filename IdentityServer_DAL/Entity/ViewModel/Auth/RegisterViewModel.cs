@@ -16,6 +16,10 @@ namespace IdentityServer_DAL.Entity.ViewModel.Auth
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = null!;
 
+        [DataType(DataType.Url)]
         public string? ReturnUrl { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; } = null!;
     }
 }

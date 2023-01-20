@@ -65,7 +65,7 @@ namespace IdentityServer_DAL_MySQL.MenegmentData
                         foreach (var user in userMgr.Users)
                         {
                             var identityResult = await userMgr.DeleteAsync(user);
-
+  
                             if (identityResult != null && !identityResult.Succeeded)
                             {
                                 throw new Exception(identityResult.Errors.First().Description);
