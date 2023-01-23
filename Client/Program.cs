@@ -1,4 +1,6 @@
 using IdentityModel.Client;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,7 +13,10 @@ namespace Client
     {
         public static void Main(string[] args)
         {
-            Start:
+            var host = CreateHostBuilder(args).Build();
+            host.Run();
+
+        Start:
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nВиберiть варiант:");
             Console.ResetColor();
@@ -38,7 +43,7 @@ namespace Client
             if(input2 == 0)
             {
                 goto Start;
-            }
+            } 
         }
 
         private static async Task SendRequestAtIdentityServerAtTryGetAccesFromApi1Async(string clientID, string clientSecret)
@@ -114,5 +119,12 @@ namespace Client
 
             return GetResponseFromURLAsync(url, tokenResponse);
         }
+
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+                Host.CreateDefaultBuilder(args)
+                    .ConfigureWebHostDefaults(webBuilder =>
+                    {
+                        webBuilder.UseStartup<Startup>();
+                    });
     }
 }
