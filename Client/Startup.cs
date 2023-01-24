@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using IdentityServer_Common.Common;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using System;
 using System.IO;
 
 namespace Client
@@ -25,7 +25,6 @@ namespace Client
         {
             services.AddControllersWithViews(conf =>
             {
- 
                 conf.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             });
         }
@@ -39,7 +38,8 @@ namespace Client
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Environment.ContentRootPath, "Styles")),
+                //FileProvider = new PhysicalFileProvider(Path.Combine(Environment.ContentRootPath, "Styles")),
+                FileProvider = new PhysicalFileProvider(Path.Combine($"{VisualStudioProvider.TryGetSolutionDirectory()}/IdentityServer_FrontEnd_Common", "Styles")),
                 RequestPath = "/styles"
             });
 

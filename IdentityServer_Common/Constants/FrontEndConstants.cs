@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace IdentityServer_Common.Constants
+﻿namespace IdentityServer_Common.Constants
 {
     public static class FrontEndConstants
     {

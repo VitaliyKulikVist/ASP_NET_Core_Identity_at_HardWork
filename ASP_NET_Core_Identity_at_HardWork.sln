@@ -17,14 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer_Common", "Id
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer_FrontEnd", "IdentityServer_FrontEnd\IdentityServer_FrontEnd.csproj", "{21663C8E-F103-4F9A-9322-B42CD72F31E6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{9F161DF0-14A1-4D7C-A906-7311F8472735}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Styles", "Styles", "{A8CC3209-D079-431D-B107-7354B08B6005}"
-	ProjectSection(SolutionItems) = preProject
-		assets\Styles\animation.css = assets\Styles\animation.css
-		assets\Styles\app.css = assets\Styles\app.css
-		assets\Styles\button.css = assets\Styles\button.css
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer_FrontEnd_Common", "IdentityServer_FrontEnd_Common\IdentityServer_FrontEnd_Common.csproj", "{50983D96-8D97-47EB-A774-322AC5C82C06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,12 +53,13 @@ Global
 		{21663C8E-F103-4F9A-9322-B42CD72F31E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21663C8E-F103-4F9A-9322-B42CD72F31E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21663C8E-F103-4F9A-9322-B42CD72F31E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50983D96-8D97-47EB-A774-322AC5C82C06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50983D96-8D97-47EB-A774-322AC5C82C06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50983D96-8D97-47EB-A774-322AC5C82C06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50983D96-8D97-47EB-A774-322AC5C82C06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{A8CC3209-D079-431D-B107-7354B08B6005} = {9F161DF0-14A1-4D7C-A906-7311F8472735}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7C93C9AC-6F6A-4EA8-A694-3A7A869DC3FE}

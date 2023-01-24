@@ -1,7 +1,6 @@
 ﻿using IdentityServer_Common.Infrastructure.Interface;
 using IdentityServer_DAL.Entity;
 using IdentityServer_FrontEnd.ViewModels;
-using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -12,21 +11,15 @@ namespace IdentityServer_FrontEnd.Controllers
 {
     public class PagesController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-
         private readonly UserManager<ApplicationUser> _userManager;
-
-        private readonly IIdentityServerInteractionService _interactionService;
 
         private readonly IValidation _validation;
 
         private readonly IHostEnvironment _environment;
 
-        public PagesController (SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IIdentityServerInteractionService interactionService, IValidation validation, IHostEnvironment environment)
+        public PagesController (UserManager<ApplicationUser> userManager, IValidation validation, IHostEnvironment environment)
         {
-            _signInManager = signInManager;
             _userManager = userManager;
-            _interactionService = interactionService;
             _validation = validation;
             _environment = environment;
         }
@@ -36,8 +29,10 @@ namespace IdentityServer_FrontEnd.Controllers
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try MainPage [Post] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", mainPageViewModel.UserName);
+                Log.Debug("Try MainPage [Get] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", mainPageViewModel.UserName);
             }
+
+            await _validation.ValidateAsync(mainPageViewModel, ModelState);
 
             if (_environment.IsDevelopment())
             {

@@ -6,24 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\assets\styles\animation.css" Link="Styles\animation.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\assets\styles\app.css" Link="Styles\app.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\assets\styles\button.css" Link="Styles\button.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="IdentityModel" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Styles\" />
+    <ProjectReference Include="..\IdentityServer_Common\IdentityServer_Common.csproj" />
+    <ProjectReference Include="..\IdentityServer_FrontEnd_Common\IdentityServer_FrontEnd_Common.csproj" />
   </ItemGroup>
 
 </Project>

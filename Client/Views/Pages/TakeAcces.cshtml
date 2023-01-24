@@ -3,8 +3,13 @@
     <link href=@Url.Content("~/styles/animation.css") rel="stylesheet" type="text/css" />
     <link href=@Url.Content("~/styles/button.css") rel="stylesheet" type="text/css" />
 </head>
-<body>
-    <div class="heared">Click button, to take Acces at API</div>
+<body class="body">
+    <div class="heared">
+        <form asp-controller="Pages" asp-action="TakeAcces" metod="get">
+                Click button, to take Acces at API
+            </form>
+        </div>
+    
 </body>
 <footer>
     <div class="block">
