@@ -13,14 +13,11 @@ namespace IdentityServer_FrontEnd.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
-        private readonly IValidation _validation;
-
         private readonly IHostEnvironment _environment;
 
-        public PagesController (UserManager<ApplicationUser> userManager, IValidation validation, IHostEnvironment environment)
+        public PagesController (UserManager<ApplicationUser> userManager, IHostEnvironment environment)
         {
             _userManager = userManager;
-            _validation = validation;
             _environment = environment;
         }
 
@@ -31,8 +28,6 @@ namespace IdentityServer_FrontEnd.Controllers
             {
                 Log.Debug("Try MainPage [Get] user:\tName: {UserName}\tPassword: {Password}\nRedirectURL:\t{ReturnUrl}", mainPageViewModel.UserName);
             }
-
-            await _validation.ValidateAsync(mainPageViewModel, ModelState);
 
             if (_environment.IsDevelopment())
             {
