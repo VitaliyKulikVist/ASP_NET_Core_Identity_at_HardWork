@@ -120,6 +120,7 @@ namespace IdentityServer_FrontEnd.Controllers
                 return View(FrontEndConstants.NamePageLogin, loginViewModel);
             }
 
+            /* /* Cookie дебаг інпут
             if (_environment.IsDevelopment())
             {
                 Log.Information("Content Length before {value}\t Cookies Count = {Cookies}", HttpContext.Request.ContentLength, HttpContext.Request.Cookies.Count);
@@ -135,11 +136,13 @@ namespace IdentityServer_FrontEnd.Controllers
                     }
                 }
             }
+            */
 
             //isPersistent - параметр відноситься до Cookie
             //lockoutOnFailure - параметр відповідає за те, щоб заблокувати акаунт якщо було декілька не вдалих спроб
             var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, isPersistent: true, false);
 
+            /* Cookie дебаг оутпут
             if (_environment.IsDevelopment())
             {
                 Log.Information("Content Length after {value}\t Cookies Count = {Cookies}", HttpContext.Request.ContentLength, HttpContext.Request.Cookies.Count);
@@ -155,16 +158,20 @@ namespace IdentityServer_FrontEnd.Controllers
                     }
                 }
             }
+            */
 
             if (result.Succeeded && _environment.IsDevelopment())
             {
                 Log.Information("USER\t{UserName}\t Found!", loginViewModel.UserName);
             }
 
-            if (result.Succeeded)// && !string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl)) 
+            if (result.Succeeded && !string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl)) 
             {
-                //return Redirect(loginViewModel.ReturnUrl!);
+                return Redirect(loginViewModel.ReturnUrl!);
+            }
 
+            if (result.Succeeded)
+            {
                 return RedirectToAction(FrontEndConstants.NamePageMainPage, FrontEndConstants.ControllerNamePages, new MainPageViewModel().GetMainPage(loginViewModel));
             }
 
@@ -264,9 +271,6 @@ namespace IdentityServer_FrontEnd.Controllers
                         }
                     }
 
-                    //var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value!.Errors.Count > 0) select new { Title = modelstate.Key };
-
-
                     if (result.Errors.Count() > 0)
                     {
                         SaveValidateInformationAtDynamic(result);
@@ -324,11 +328,22 @@ namespace IdentityServer_FrontEnd.Controllers
         {
             var errors = ModelState.Values.SelectMany(s => s.Errors);
             var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
-            errorModel.UserNameErrors = userNameTemp;
+            if (userNameTemp != null)
+            {
+                errorModel.UserNameErrors = userNameTemp;
+            }
+
             var passwordTemp = errors.Where(s => s.ErrorMessage.Contains("Password") && !s.ErrorMessage.Contains("Confirm"));
-            errorModel.PasswordErrors = passwordTemp;
+            if (passwordTemp != null) 
+            {
+                errorModel.PasswordErrors = passwordTemp;
+            }
+
             var confirmPasswordTemp = errors.Where(s => s.ErrorMessage.Contains("Confirm Password"));
-            errorModel.ConfirmPasswordErrors = confirmPasswordTemp;
+            if (confirmPasswordTemp != null) 
+            {
+                errorModel.ConfirmPasswordErrors = confirmPasswordTemp;
+            }
 
             if (result != null)
             {

@@ -1,20 +1,38 @@
-﻿<head>
-    <link href=@Url.Content("~/styles/app.css") rel="stylesheet" type="text/css" />
-    <link href=@Url.Content("~/styles/animation.css") rel="stylesheet" type="text/css" />
-    <link href=@Url.Content("~/styles/button.css") rel="stylesheet" type="text/css" />
+﻿@using Client.ViewModels;
+
+@model TakeAccesViewModels
+
+<head>
+    <link href=@Url.Content("~/Styles/app.css") rel="stylesheet" type="text/css" />
+    <link href=@Url.Content("~/Styles/animation.css") rel="stylesheet" type="text/css" />
+    <link href=@Url.Content("~/Styles/button.css") rel="stylesheet" type="text/css" />
 </head>
 <body class="body">
     <div class="heared">
         <form asp-controller="Pages" asp-action="TakeAcces" metod="get">
-                Click button, to take Acces at API
+            @if (Model.HaveAcces)
+            {
+                <label>
+                    Acces is DONE!
+                </label>
+            }
+            else
+            {
+                <label>
+                    Click button, to take Acces at API
+                </label>
+            }
             </form>
         </div>
     
 </body>
 <footer>
-    <div class="block">
+    @if (!Model.HaveAcces)
+    {
+        <div class="block">
             <button type="submit" class="button">
-                Take Acces at API
+            Take Acces at API
             </button>
         </div>
+    }
 </footer>

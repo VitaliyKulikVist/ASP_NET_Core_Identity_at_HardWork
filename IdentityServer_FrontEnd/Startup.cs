@@ -95,6 +95,13 @@ namespace IdentityServer_FrontEnd
             }
 
             app.UseStaticFiles();
+            //app.UseStaticFiles( new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Environment.ContentRootPath, "Styles")),
+            //    RequestPath = "/Styles"
+            //});
+
+
             app.UseRouting();
             
             app.UseEndpoints(endpoints =>

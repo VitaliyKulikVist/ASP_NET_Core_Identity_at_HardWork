@@ -36,12 +36,14 @@ namespace Client
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                //FileProvider = new PhysicalFileProvider(Path.Combine(Environment.ContentRootPath, "Styles")),
-                FileProvider = new PhysicalFileProvider(Path.Combine($"{VisualStudioProvider.TryGetSolutionDirectory()}/IdentityServer_FrontEnd_Common", "Styles")),
-                RequestPath = "/styles"
-            });
+
+            app.UseStaticFiles();
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    //FileProvider = new PhysicalFileProvider(Path.Combine(Environment.ContentRootPath, "Styles")),
+            //    FileProvider = new PhysicalFileProvider(Path.Combine($"{VisualStudioProvider.TryGetSolutionDirectory()}/IdentityServer_FrontEnd_Common", "Styles")),
+            //    RequestPath = "/Styles"
+            //});
 
             app.UseRouting();
 

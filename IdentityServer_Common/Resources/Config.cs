@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -145,9 +146,10 @@ namespace IdentityServer_Common.Resources
                     //FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
                     
                     AllowOfflineAccess = true,
+                    //Області які доступні цьому клієнту
                     AllowedScopes = {
-                        "openid",
-                        "profile",
+                        IdentityServerConstants.StandardScopes.OpenId,// "openid",
+                        IdentityServerConstants.StandardScopes.Profile,//"profile",
                         IdentityServerScopeConstants.ApiScope_Level2 }
                 },
 
