@@ -1,4 +1,4 @@
-﻿namespace IdentityServer_Common
+﻿namespace IdentityServer_Common.Constants
 {
     public static class IdentityServerScopeConstants
     {

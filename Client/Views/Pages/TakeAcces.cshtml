@@ -30,9 +30,16 @@
     @if (!Model.HaveAcces)
     {
         <div class="block">
-            <button type="submit" class="button">
-            Take Acces at API
-            </button>
+            <a asp-controller="Pages" asp-action="TakeAccesGrantTypesClientCredentials" metod="get">
+                <button type="submit" class="button">
+                    Take Acces at API from GrantTypes ClientCredentials
+                </button>
+            </a>
+            <a asp-controller="Pages" asp-action="TakeAccesGrantTypesCode" metod="get">
+                <button type="submit" class="button">
+                    Take Acces at API from GrantTypes Code
+                </button>
+            </a>
         </div>
     }
 </footer>

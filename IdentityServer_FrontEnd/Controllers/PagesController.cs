@@ -1,5 +1,4 @@
-﻿using IdentityServer_Common.Infrastructure.Interface;
-using IdentityServer_DAL.Entity;
+﻿using IdentityServer_DAL.Entity;
 using IdentityServer_FrontEnd.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

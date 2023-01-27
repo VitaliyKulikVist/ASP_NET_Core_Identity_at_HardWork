@@ -1,10 +1,8 @@
-﻿using IdentityServer_Common.Common;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 
@@ -36,15 +34,7 @@ namespace Client
                 app.UseDeveloperExceptionPage();
             }
 
-
             app.UseStaticFiles();
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    //FileProvider = new PhysicalFileProvider(Path.Combine(Environment.ContentRootPath, "Styles")),
-            //    FileProvider = new PhysicalFileProvider(Path.Combine($"{VisualStudioProvider.TryGetSolutionDirectory()}/IdentityServer_FrontEnd_Common", "Styles")),
-            //    RequestPath = "/Styles"
-            //});
-
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

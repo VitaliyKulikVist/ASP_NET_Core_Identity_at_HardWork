@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
-using Microsoft.Extensions.FileProviders;
 using IdentityServer_DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using IdentityServer_DAL.Entity;
@@ -15,7 +14,6 @@ using FluentValidation;
 using IdentityServer_Common.Extensions;
 using IdentityServer_DAL.Entity.ViewModel.Auth;
 using IdentityServer_Common.Constants;
-using IdentityServer_Common.Common;
 
 namespace IdentityServer_FrontEnd
 {
@@ -95,13 +93,6 @@ namespace IdentityServer_FrontEnd
             }
 
             app.UseStaticFiles();
-            //app.UseStaticFiles( new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Environment.ContentRootPath, "Styles")),
-            //    RequestPath = "/Styles"
-            //});
-
-
             app.UseRouting();
             
             app.UseEndpoints(endpoints =>
