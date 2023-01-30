@@ -1,15 +1,13 @@
 ﻿using Client.ViewModels;
 using IdentityModel.Client;
 using IdentityServer_Common.Constants;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System;
 
 namespace Client.Controllers
 {
@@ -22,12 +20,13 @@ namespace Client.Controllers
             _environment = environment;
         }
 
+        //Загрузка самої сторінки
         [HttpGet]
         public IActionResult TakeAcces(bool accesIs = false)
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try TakeAcces [Get])");
+                Log.Debug("Try Take Acces [Get]");
             }
 
             var viewModel = new TakeAccesViewModels()
@@ -35,7 +34,7 @@ namespace Client.Controllers
                 HaveAcces = accesIs,
             };
 
-            return View("TakeAcces", viewModel);
+            return View(FrontEndConstants.NamePageTakeAcces, viewModel);
         }
 
         [HttpPost]
@@ -43,7 +42,7 @@ namespace Client.Controllers
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try TakeAcces [Post] acces is = {ass}", 
+                Log.Debug("Try Take Acces [Post] acces is = {ass}", 
                     takeAccesViewModels.HaveAcces);
             }
 
@@ -52,16 +51,16 @@ namespace Client.Controllers
                 return RedirectToAction(FrontEndConstants.NamePageLogin, FrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
             }
 
-            return View("TakeAcces", takeAccesViewModels);
+            return View(FrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
         }
 
-
+        //Кнопка 1
         [HttpGet]
-        public IActionResult TakeAccesGrantTypesClientCredentials(bool accesIs = false)
+        public IActionResult TakeAccesGrantTypesClientCredentials(bool accesIs)
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try TakeAccesGrantTypesClientCredentials [Get])");
+                Log.Debug("Try Take Acces GrantTypes.ClientCredentials [Get]");
             }
 
             var viewModel = new TakeAccesViewModels()
@@ -69,7 +68,8 @@ namespace Client.Controllers
                 HaveAcces = accesIs,
             };
 
-            return View("TakeAcces", viewModel);
+            //return RedirectToAction(FrontEndConstants.NamePageTakeAcces, FrontEndConstants.ControllerTakeAcces, viewModel);
+            return View(FrontEndConstants.NamePageTakeAcces, viewModel);
         }
 
         [HttpPost]
@@ -77,7 +77,7 @@ namespace Client.Controllers
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try TakeAccesGrantTypesClientCredentials [Post] acces is = {ass}",
+                Log.Debug("Try Take Acces GrantTypes.ClientCredentials [Post] acces is = {ass}",
                     takeAccesViewModels.HaveAcces);
             }
 
@@ -88,15 +88,16 @@ namespace Client.Controllers
 
             _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async("client", "secret");
 
-            return View("TakeAcces", takeAccesViewModels);
+            return View(FrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
         }
 
+        //Кнопка 2
         [HttpGet]
-        public IActionResult TakeAccesGrantTypesCode(bool accesIs = false)
+        public IActionResult TakeAccesGrantTypesCode(bool accesIs)
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try TakeAccesGrantTypesCode [Get])");
+                Log.Debug("Try Take Acces GrantTypes.Code [Get]");
             }
 
             var viewModel = new TakeAccesViewModels()
@@ -104,7 +105,7 @@ namespace Client.Controllers
                 HaveAcces = accesIs,
             };
 
-            return View("TakeAcces", viewModel);
+            return View(FrontEndConstants.NamePageTakeAcces, viewModel);
         }
 
         [HttpPost]
@@ -112,7 +113,7 @@ namespace Client.Controllers
         {
             if (_environment.IsDevelopment())
             {
-                Log.Debug("Try TakeAccesGrantTypesCode [Post] acces is = {ass}",
+                Log.Debug("Try Take Acces GrantTypes.Code [Post] acces is = {ass}",
                     takeAccesViewModels.HaveAcces);
             }
 
@@ -123,7 +124,7 @@ namespace Client.Controllers
                 return RedirectToAction(FrontEndConstants.NamePageLogin, FrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
             }
 
-            return View("TakeAcces", takeAccesViewModels);
+            return View(FrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
         }
 
         private async Task SendRequestAtIdentityServerAtTryGetAccesFromApi1Async(string clientID, string clientSecret)

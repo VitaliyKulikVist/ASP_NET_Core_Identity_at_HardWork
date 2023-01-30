@@ -9,7 +9,7 @@
 </head>
 <body class="body">
     <div class="heared">
-        <form asp-controller="Pages" asp-action="TakeAcces" metod="get">
+        <form asp-controller="Pages" asp-action="TakeAcces" metod="post">
             @if (Model.HaveAcces)
             {
                 <label>
@@ -19,7 +19,7 @@
             else
             {
                 <label>
-                    Click button, to take Acces at API
+                    Click button, to take Acces at API at:
                 </label>
             }
             </form>
@@ -30,14 +30,14 @@
     @if (!Model.HaveAcces)
     {
         <div class="block">
-            <a asp-controller="Pages" asp-action="TakeAccesGrantTypesClientCredentials" metod="get">
+            <a asp-controller="Pages" asp-action="TakeAccesGrantTypesClientCredentials" asp-route-accesIs="@Model.HaveAcces" metod="get">
                 <button type="submit" class="button">
-                    Take Acces at API from GrantTypes ClientCredentials
+                    GrantTypes ClientCredentials
                 </button>
             </a>
-            <a asp-controller="Pages" asp-action="TakeAccesGrantTypesCode" metod="get">
+            <a asp-controller="Pages" asp-action="TakeAccesGrantTypesCode" asp-route-accesIs="@Model.HaveAcces" metod="get">
                 <button type="submit" class="button">
-                    Take Acces at API from GrantTypes Code
+                    GrantTypes Code
                 </button>
             </a>
         </div>

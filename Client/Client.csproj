@@ -12,7 +12,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IdentityServer_Common\IdentityServer_Common.csproj" />
-    <ProjectReference Include="..\IdentityServer_FrontEnd_Common\IdentityServer_FrontEnd_Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Styles\animation.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Styles\app.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Styles\button.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

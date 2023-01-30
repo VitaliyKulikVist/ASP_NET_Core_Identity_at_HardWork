@@ -2,6 +2,6 @@
 {
     public class TakeAccesViewModels
     {
-        public bool HaveAcces { get; set; } = false;
+        public bool HaveAcces { get; set; } = true;
     }
 }

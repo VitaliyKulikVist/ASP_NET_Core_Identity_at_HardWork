@@ -1,0 +1,42 @@
+﻿.input 
+{
+    font-size: 16px;
+    font-family: Arial;
+    background-color: #140e97;
+    caret-color: transparent; /* встановлює колір каретки вставки */
+    width: 30%;
+    color: white;
+}
+
+.main_pages_text 
+{
+    font-size: 16px;
+    font-family: Arial;
+    color: white;
+}
+
+.heared 
+{
+    font-size: 30px;
+    font-family: Arial;
+    color: white;
+    text-align: center;
+}
+
+.block {
+    margin-top: 10px; /* встановлює область полів у верхній частині елемента */
+    font-family: Arial;
+    width: 100%;
+    text-align: center;
+}
+
+.output_block {
+    margin-top: 8px;
+    font-size: 30px;
+    font-family: Arial;
+    text-align:right;
+}
+
+.body {
+    background: repeating-linear-gradient(#000000,#030748); /* встановлює всі властивості стилю фону одночасно, такі як колір, зображення, походження та розмір або метод повторення */
+}
