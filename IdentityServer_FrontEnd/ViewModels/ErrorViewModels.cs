@@ -13,5 +13,8 @@ namespace IdentityServer_FrontEnd.ViewModels
         public IEnumerable<ModelError>? ConfirmPasswordErrors { get; set; }
 
         public IEnumerable<IdentityError>? IdentityError { get; set; }
+
+        public bool DelateAllUsersDone { get; set; } = false;
+        public bool CreateDefaultUsersDone { get; set; } = false;
     }
 }

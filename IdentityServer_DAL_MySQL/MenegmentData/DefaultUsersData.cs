@@ -2,7 +2,7 @@
 
 namespace IdentityServer_DAL_MySQL.MenegmentData
 {
-    public class UsersData
+    public class DefaultUsersData
     {
         public static Dictionary<string, string> UsersDictionary { get; } = new Dictionary<string, string>()
         {

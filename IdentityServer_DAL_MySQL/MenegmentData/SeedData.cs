@@ -13,7 +13,7 @@ namespace IdentityServer_DAL_MySQL.MenegmentData
 {
     public class SeedData
     {
-        public static void EnsureSeedData(string connectionString)
+        public static void EnsureSeedDataAsync(string connectionString = Constants.ConnectionMySQL)
         {
             var services = new ServiceCollection();
             services.AddLogging();
@@ -39,7 +39,7 @@ namespace IdentityServer_DAL_MySQL.MenegmentData
 
                     var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-                    foreach (var user in UsersData.UsersDictionary)
+                    foreach (var user in DefaultUsersData.UsersDictionary)
                     {
                         var unit = userMgr.FindByNameAsync(user.Key).Result;
                         if (unit == null)

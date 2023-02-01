@@ -37,37 +37,7 @@ namespace IdentityServer_DAL_MySQL
             }
             #endregion
 
-            Console.ForegroundColor= ConsoleColor.Green;
-            Console.WriteLine($"Виберiть варiант роботи:");
-            Console.ResetColor();
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"1: Заповнення бази данних данними");
-            Console.ResetColor();
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"2: Видалення з бази, данних");
-            Console.ResetColor();
-
-            int input = Convert.ToInt32( Console.ReadLine() );
-
-            switch (input)
-            {
-                case 1:
-                Log.Information($"Seeding  Data Start{DateTime.UtcNow}");
-                SeedData.EnsureSeedData(Constants.ConnectionMySQL);
-                Log.Information($"Seeding  Data Finish{DateTime.UtcNow}");
-                break; 
-                case 2:
-                Log.Information($"Deleteing  Data Start{DateTime.UtcNow}");
-                DeleteData.DeleteAllUsers(Constants.ConnectionMySQL);
-                Log.Information($"Deleteing  Data Finish{DateTime.UtcNow}");
-                break;
-                default:
-                break;
-            }
-
-            //host.Run();
+            host.Run();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>

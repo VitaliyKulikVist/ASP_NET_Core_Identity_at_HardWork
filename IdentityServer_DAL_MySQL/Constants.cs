@@ -2,6 +2,6 @@
 {
     public class Constants
     {
-        public static string ConnectionMySQL { get; } = "server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;";
+        public const string ConnectionMySQL = "server=localhost;user=vitaliy;password=12345678;database=TestConnectionName;";
     }
 }
