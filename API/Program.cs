@@ -2,7 +2,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using Serilog;
 using Microsoft.AspNetCore.Hosting;
-using IdentityServer_Common.Common;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
+//using IdentityServer_Common.Common;
 
 namespace API
 {
@@ -10,7 +12,8 @@ namespace API
     {
         public static int Main(string[] args)
         {
-            AdditionalClasses.AddAndConfiguredLogger();
+            //AdditionalClasses.AddAndConfiguredLogger();
+            AddAndConfiguredLogger();
 
             try
             {
@@ -40,6 +43,24 @@ namespace API
                     {
                         webBuilder.UseStartup<Startup>();
                     });
+
+        public static void AddAndConfiguredLogger(
+            LogEventLevel microsoft = LogEventLevel.Warning,
+            LogEventLevel microsoftHostingLifetime = LogEventLevel.Information,
+            LogEventLevel system = LogEventLevel.Warning,
+            LogEventLevel microsoftAspNetCoreAuthentication = LogEventLevel.Information)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", microsoft)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", microsoftHostingLifetime)
+                .MinimumLevel.Override("System", system)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", microsoftAspNetCoreAuthentication)
+                .Enrich.FromLogContext()
+
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
+                .CreateLogger();
+        }
     }
 }
 

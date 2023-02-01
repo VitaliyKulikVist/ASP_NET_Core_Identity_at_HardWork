@@ -1,0 +1,32 @@
+﻿@using IdentityServer.ViewModels;
+
+@model MainPageViewModel
+
+<head>
+    <link href=@Url.Content("~/Styles/app.css") rel="stylesheet" type="text/css" />
+    <link href=@Url.Content("~/Styles/animation.css") rel="stylesheet" type="text/css" />
+    <link href=@Url.Content("~/Styles/button.css") rel="stylesheet" type="text/css" />
+</head>
+<body class="body">
+    <div class="heared">
+            <form asp-controller="Pages" asp-action="MainPage" metod="get">
+                Hello @Model.UserName
+            </form>
+    </div>
+</body>
+<footer>
+    <div class="block">
+        <a asp-controller="Pages" asp-action="TakeAcces" metod="get" asp-route-accesIs="@true">
+            <button type="submit" class="button">
+                    Ok
+            </button>
+            </a>
+    </div>
+    <div class="output_block">
+        <a asp-controller="Auth" asp-action="LogOut" asp-route-logOutId="@Model.UserName">
+            <button type="submit" class="button">
+                    Log Out
+            </button>
+            </a>
+    </div>
+</footer>

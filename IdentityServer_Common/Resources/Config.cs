@@ -137,7 +137,7 @@ namespace IdentityServer_Common.Resources
                     AllowedGrantTypes = GrantTypes.Code,
 
                     //Перенаправлення після автентифікації клієнтського застосунку
-                    RedirectUris = { "https://localhost:44300/signin-oidc" },
+                    RedirectUris = { "https://localhost:44300/signin-oidc", "https://oauth.pstmn.io/v1/callback" },
                     //Набір адрес яким дозволено використовувати IdentityServer(іншими словами набір арі)
                     AllowedCorsOrigins = { "https://localhost:7249" },
                     //Адреса куди відбувається перенаправлення після виходу з клієнтського застосунку

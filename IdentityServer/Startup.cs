@@ -1,6 +1,10 @@
-﻿using IdentityServer_Common.Resources;
+﻿using FluentValidation;
+using IdentityServer_Common.Constants;
+using IdentityServer_Common.Extensions;
+using IdentityServer_Common.Resources;
 using IdentityServer_DAL.Data;
 using IdentityServer_DAL.Entity;
+using IdentityServer_DAL.Entity.ViewModel.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +12,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace IdentityServer
 {
@@ -25,18 +31,39 @@ namespace IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(conf =>
+            {
+                // Якщо нема ? не буде рахувати помилкою
+                conf.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+            });
+
+            services.AddValidatorsFromAssemblyContaining<LoginViewModel>();
+            services.AddValidation();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                var connetionString = Configuration.GetConnectionString("DefaultConnectionMySQL");
+                var connetionString = Configuration.GetConnectionString(FrontEndConstants.StringConnectionMySQL);
                 options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
             });
             
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.Password.RequiredLength = FluentValidationConstants.MinimumLengthPassword;//Мінімальна довжина пароля
+                config.Password.RequireDigit = false;//Не обов'язково використовувати ЦИФРИ
+                config.Password.RequireNonAlphanumeric = false;//Не обов'язково використовувати СИМВОЛИ
+                config.Password.RequireUppercase = false;//Не обов'язково використовувати ВЕЛИКІ букви
+                config.Password.RequireLowercase = false;//чи паролі повинні містити символ ASCII нижнього регістру
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            
+
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = FrontEndConstants.CookieName;
+                config.LoginPath = new PathString($"/{FrontEndConstants.ControllerNameAuth}/{FrontEndConstants.NamePageLogin}");
+                config.LogoutPath = new PathString($"/{FrontEndConstants.ControllerNameAuth}/LogOut");
+            });
+
             var builder = services.AddIdentityServer(options =>
             {
                 //Чи викликати події помилки.
@@ -50,6 +77,8 @@ namespace IdentityServer
 
                 //Видає претензію aud із форматом видавця/ресурсів. Це потрібно для деяких старих систем перевірки маркерів доступу. За замовчуванням значення false.
                 options.EmitStaticAudienceClaim = true;
+
+                options.UserInteraction.LoginUrl = new PathString($"/{FrontEndConstants.ControllerNameAuth}/{FrontEndConstants.NamePageLogin}");
             })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
@@ -69,7 +98,12 @@ namespace IdentityServer
             }
 
             
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Environment.ContentRootPath, "Styles")),
+                RequestPath = "/Styles"
+            });
             app.UseRouting();
             
             app.UseIdentityServer();
