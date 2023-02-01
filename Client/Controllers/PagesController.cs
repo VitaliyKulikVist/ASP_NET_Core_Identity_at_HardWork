@@ -163,6 +163,13 @@ namespace Client.Controllers
             await Switches1(tokenResponse);
         }
 
+        private Task Switches1(IdentityModel.Client.TokenResponse tokenResponse)
+        {
+            string url = "https://localhost:7249/identity";
+
+            return GetResponseFromURLAsync(url, tokenResponse);
+        }
+
         private async Task GetResponseFromURLAsync(string url, IdentityModel.Client.TokenResponse tokenResponse)
         {
             var apiClient = new HttpClient();
@@ -181,13 +188,5 @@ namespace Client.Controllers
 
             }
         }
-
-        private Task Switches1(IdentityModel.Client.TokenResponse tokenResponse)
-        {
-            string url = "https://localhost:7249/identity";
-
-            return GetResponseFromURLAsync(url, tokenResponse);
-        }
-
     }
 }

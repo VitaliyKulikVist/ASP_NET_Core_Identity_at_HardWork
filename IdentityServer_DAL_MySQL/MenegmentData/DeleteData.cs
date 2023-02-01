@@ -62,9 +62,9 @@ namespace IdentityServer_DAL_MySQL.MenegmentData
                     {
                         Console.WriteLine("Є ще користувачі які потрібно видалити які не входять в список");
 
-                        foreach (var user in userMgr.Users)
+                        while (userMgr.Users.Count() > 0)
                         {
-                            var identityResult = await userMgr.DeleteAsync(user);
+                            var identityResult = await userMgr.DeleteAsync(userMgr.Users.First());
   
                             if (identityResult != null && !identityResult.Succeeded)
                             {

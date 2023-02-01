@@ -37,8 +37,6 @@ namespace IdentityServer_FrontEnd.Controllers
 
         private readonly IHostEnvironment _environment;
 
-        private ErrorViewModel errorModel = null!;
-
         public AuthController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
@@ -326,9 +324,11 @@ namespace IdentityServer_FrontEnd.Controllers
 
         private void SaveValidateInformationAtDynamic(IdentityResult result = null!)
         {
+            ErrorViewModel errorModel = new ErrorViewModel();
+
             var errors = ModelState.Values.SelectMany(s => s.Errors);
             var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
-            if (userNameTemp != null)
+            if (userNameTemp != null && userNameTemp.Count() > 0)
             {
                 errorModel.UserNameErrors = userNameTemp;
             }
