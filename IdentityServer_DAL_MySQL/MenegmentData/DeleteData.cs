@@ -3,14 +3,12 @@ using IdentityServer_DAL.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 
 namespace IdentityServer_DAL_MySQL.MenegmentData
 {
     public class DeleteData
     {
-        public static async void DeleteAllUsersAsync(string connectionString = Constants.ConnectionMySQL)
+        public async void DeleteAllUsersAsync(string connectionString = Constants.ConnectionMySQL)
         {
             var services = new ServiceCollection();
             services.AddLogging();

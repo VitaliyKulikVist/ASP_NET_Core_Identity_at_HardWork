@@ -4,7 +4,7 @@ using IdentityServer_Common.Extensions;
 using IdentityServer_Common.Resources;
 using IdentityServer_DAL.Data;
 using IdentityServer_DAL.Entity;
-using IdentityServer_DAL.Entity.ViewModel.Auth;
+using IdentityServer_FrontEnd_Common.Entity.ViewModel.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

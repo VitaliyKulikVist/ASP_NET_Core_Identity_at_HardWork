@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace IdentityServer_DAL_MySQL.MenegmentData
+﻿namespace IdentityServer_DAL_MySQL.MenegmentData
 {
     public class DefaultUsersData
     {

@@ -1,4 +1,4 @@
-﻿namespace IdentityServer_DAL.Infrastructure.Interface
+﻿namespace IdentityServer_FrontEnd_Common.Infrastructure.Interface
 {
     public  interface IAuthViewModel
     {

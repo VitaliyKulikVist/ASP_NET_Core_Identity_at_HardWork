@@ -1,4 +1,4 @@
-﻿using IdentityServer_DAL.Infrastructure.Interface;
+﻿using IdentityServer_FrontEnd_Common.Infrastructure.Interface;
 
 namespace IdentityServer.ViewModels
 {

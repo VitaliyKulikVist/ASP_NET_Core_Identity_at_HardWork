@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using IdentityServer_Common.Constants;
 
-namespace IdentityServer_DAL.FluentValidation.Extensions
+namespace IdentityServer_FrontEnd_Common.FluentValidation.Extensions
 {
     public static class RuleBuilderExtensions
     {

@@ -1,10 +1,8 @@
 ﻿using IdentityServer_DAL.Entity;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace IdentityServer_DAL.UserDataControll
+namespace IdentityServer_DAL_MySQL.UserDataControll
 {
     public class AuthUserManager
     {

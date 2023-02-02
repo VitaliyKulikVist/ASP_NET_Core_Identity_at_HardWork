@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer_DAL", "Ident
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer_Common", "IdentityServer_Common\IdentityServer_Common.csproj", "{231E7604-B651-4351-AC72-2D8BF7E278D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer_DAL_MySQL", "IdentityServer_DAL_MySQL\IdentityServer_DAL_MySQL.csproj", "{50E44B62-51E5-41CE-BC76-96D0D25A4D28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer_FrontEnd_Common", "IdentityServer_FrontEnd_Common\IdentityServer_FrontEnd_Common.csproj", "{C5205E0A-5047-45E5-B2B4-3018C5E8C295}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{231E7604-B651-4351-AC72-2D8BF7E278D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{231E7604-B651-4351-AC72-2D8BF7E278D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{231E7604-B651-4351-AC72-2D8BF7E278D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50E44B62-51E5-41CE-BC76-96D0D25A4D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E44B62-51E5-41CE-BC76-96D0D25A4D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50E44B62-51E5-41CE-BC76-96D0D25A4D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50E44B62-51E5-41CE-BC76-96D0D25A4D28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5205E0A-5047-45E5-B2B4-3018C5E8C295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5205E0A-5047-45E5-B2B4-3018C5E8C295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5205E0A-5047-45E5-B2B4-3018C5E8C295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5205E0A-5047-45E5-B2B4-3018C5E8C295}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

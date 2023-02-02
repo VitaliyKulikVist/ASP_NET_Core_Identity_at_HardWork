@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using Serilog;
 using Microsoft.Extensions.Hosting;
 using IdentityServer_Common.Infrastructure.Interface;
-using IdentityServer_DAL.Entity.ViewModel.Auth;
 using System.Linq;
 using System.Security.Claims;
 using IdentityModel;
 using System;
 using IdentityServer_Common.Constants;
 using IdentityServer.ViewModels;
-using IdentityServer_DAL.UserDataControll;
+using IdentityServer_DAL_MySQL.UserDataControll;
+using IdentityServer_FrontEnd_Common.Entity.ViewModel.Auth;
 
 namespace IdentityServer.Controllers
 {

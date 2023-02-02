@@ -1,5 +1,5 @@
 ﻿using IdentityServer.ViewModels;
-using IdentityServer_DAL.UserDataControll;
+using IdentityServer_DAL_MySQL.UserDataControll;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Serilog;

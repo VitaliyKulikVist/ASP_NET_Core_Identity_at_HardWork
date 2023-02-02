@@ -1,5 +1,4 @@
-﻿using IdentityServer_DAL.Configurations;
-using IdentityServer_DAL.Entity;
+﻿using IdentityServer_DAL.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +51,6 @@ namespace IdentityServer_DAL.Data
                 entity.ToTable(name: "RoleClaims");
             });
 
-            builder.ApplyConfiguration(new AppUserConfiguration());
         }
     }
 }

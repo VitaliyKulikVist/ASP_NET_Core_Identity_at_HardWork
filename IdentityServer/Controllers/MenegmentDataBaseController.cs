@@ -1,5 +1,5 @@
 ﻿using IdentityServer.ViewModels;
-using IdentityServer_DAL.MenegmentData;
+using IdentityServer_DAL_MySQL.MenegmentData;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServer.Controllers

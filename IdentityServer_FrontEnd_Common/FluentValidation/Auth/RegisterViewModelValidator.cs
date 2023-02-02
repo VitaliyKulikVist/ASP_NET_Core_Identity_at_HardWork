@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using IdentityServer_DAL.Entity.ViewModel.Auth;
-using IdentityServer_DAL.FluentValidation.Extensions;
+using IdentityServer_FrontEnd_Common.Entity.ViewModel.Auth;
+using IdentityServer_FrontEnd_Common.FluentValidation.Extensions;
 
-namespace IdentityServer_DAL.FluentValidation.Auth
+namespace IdentityServer_FrontEnd_Common.FluentValidation.Auth
 {
     public class RegisterViewModelValidator : AbstractValidator<RegisterViewModel>
     {

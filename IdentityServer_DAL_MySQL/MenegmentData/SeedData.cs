@@ -5,15 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 using System.Security.Claims;
 
 namespace IdentityServer_DAL_MySQL.MenegmentData
 {
     public class SeedData
     {
-        public static void EnsureSeedDataAsync(string connectionString = Constants.ConnectionMySQL)
+        public void EnsureSeedDataAsync(string connectionString = Constants.ConnectionMySQL)
         {
             var services = new ServiceCollection();
             services.AddLogging();
