@@ -1,6 +1,6 @@
 ﻿namespace IdentityServer_Common.Constants
 {
-    public static class FrontEndConstants
+    public static class IdentityServerFrontEndConstants
     {
         public static string StringConnectionMySQL { get; } = "DefaultConnectionMySQL";
 

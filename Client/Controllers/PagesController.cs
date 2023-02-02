@@ -34,7 +34,7 @@ namespace Client.Controllers
                 HaveAcces = accesIs,
             };
 
-            return View(FrontEndConstants.NamePageTakeAcces, viewModel);
+            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, viewModel);
         }
 
         [HttpPost]
@@ -48,10 +48,10 @@ namespace Client.Controllers
 
             if (!takeAccesViewModels.HaveAcces)
             {
-                return RedirectToAction(FrontEndConstants.NamePageLogin, FrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
+                return RedirectToAction(IdentityServerFrontEndConstants.NamePageLogin, IdentityServerFrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
             }
 
-            return View(FrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
+            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
         }
 
         //Кнопка 1
@@ -69,7 +69,7 @@ namespace Client.Controllers
             };
 
             //return RedirectToAction(FrontEndConstants.NamePageTakeAcces, FrontEndConstants.ControllerTakeAcces, viewModel);
-            return View(FrontEndConstants.NamePageTakeAcces, viewModel);
+            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, viewModel);
         }
 
         [HttpPost]
@@ -83,12 +83,12 @@ namespace Client.Controllers
 
             if (!takeAccesViewModels.HaveAcces)
             {
-                return RedirectToAction(FrontEndConstants.NamePageLogin, FrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
+                return RedirectToAction(IdentityServerFrontEndConstants.NamePageLogin, IdentityServerFrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
             }
 
             _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async("client", "secret");
 
-            return View(FrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
+            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
         }
 
         //Кнопка 2
@@ -105,7 +105,7 @@ namespace Client.Controllers
                 HaveAcces = accesIs,
             };
 
-            return View(FrontEndConstants.NamePageTakeAcces, viewModel);
+            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, viewModel);
         }
 
         [HttpPost]
@@ -121,10 +121,10 @@ namespace Client.Controllers
 
             if (!takeAccesViewModels.HaveAcces)
             {
-                return RedirectToAction(FrontEndConstants.NamePageLogin, FrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
+                return RedirectToAction(IdentityServerFrontEndConstants.NamePageLogin, IdentityServerFrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
             }
 
-            return View(FrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
+            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
         }
 
         private async Task SendRequestAtIdentityServerAtTryGetAccesFromApi1Async(string clientID, string clientSecret)

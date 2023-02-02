@@ -42,7 +42,7 @@ namespace IdentityServer
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                var connetionString = Configuration.GetConnectionString(FrontEndConstants.StringConnectionMySQL);
+                var connetionString = Configuration.GetConnectionString(IdentityServerFrontEndConstants.StringConnectionMySQL);
                 options.UseMySql(connetionString, ServerVersion.AutoDetect(connetionString));
             });
             
@@ -59,9 +59,9 @@ namespace IdentityServer
 
             services.ConfigureApplicationCookie(config =>
             {
-                config.Cookie.Name = FrontEndConstants.CookieName;
-                config.LoginPath = new PathString($"/{FrontEndConstants.ControllerNameAuth}/{FrontEndConstants.NamePageLogin}");
-                config.LogoutPath = new PathString($"/{FrontEndConstants.ControllerNameAuth}/LogOut");
+                config.Cookie.Name = IdentityServerFrontEndConstants.CookieName;
+                config.LoginPath = new PathString($"/{IdentityServerFrontEndConstants.ControllerNameAuth}/{IdentityServerFrontEndConstants.NamePageLogin}");
+                config.LogoutPath = new PathString($"/{IdentityServerFrontEndConstants.ControllerNameAuth}/LogOut");
             });
 
             var builder = services.AddIdentityServer(options =>
@@ -78,7 +78,7 @@ namespace IdentityServer
                 //Видає претензію aud із форматом видавця/ресурсів. Це потрібно для деяких старих систем перевірки маркерів доступу. За замовчуванням значення false.
                 options.EmitStaticAudienceClaim = true;
 
-                options.UserInteraction.LoginUrl = new PathString($"/{FrontEndConstants.ControllerNameAuth}/{FrontEndConstants.NamePageLogin}");
+                options.UserInteraction.LoginUrl = new PathString($"/{IdentityServerFrontEndConstants.ControllerNameAuth}/{IdentityServerFrontEndConstants.NamePageLogin}");
             })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
