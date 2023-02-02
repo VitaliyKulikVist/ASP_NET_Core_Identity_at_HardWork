@@ -13,20 +13,16 @@ using IdentityModel;
 using System;
 using IdentityServer_Common.Constants;
 using IdentityServer.ViewModels;
+using IdentityServer_DAL.UserDataControll;
 
 namespace IdentityServer.Controllers
 {
     public class AuthController : Controller
     {
         /// <summary>
-        /// Необхідний для реалізації авторизації(входу)
+        /// Створений мною клас в якому буде відбуватись вся логіка (всі запити) повязана з базою данних
         /// </summary>
-        private readonly SignInManager<ApplicationUser> _signInManager;
-
-        /// <summary>
-        /// Необхідний для пошуку, та створення користувачів
-        /// </summary>
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly AuthUserManager _authUserManager;
 
         /// <summary>
         /// Необхідний для розлогінення
@@ -38,16 +34,13 @@ namespace IdentityServer.Controllers
         private readonly IHostEnvironment _environment;
 
         public AuthController(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
+            AuthUserManager authUserManager,
             IIdentityServerInteractionService identityServerInteractionService,
             IValidation validation,
             IHostEnvironment hostEnvironment)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
+            _authUserManager = authUserManager;
             _interactionService = identityServerInteractionService;
-
             _validation = validation;
 
             _environment = hostEnvironment;
@@ -102,7 +95,7 @@ namespace IdentityServer.Controllers
                 Log.Debug("Validation [{Login}] Done!", IdentityServerFrontEndConstants.NamePageLogin);
             }
 
-            var user = await _userManager.FindByNameAsync(loginViewModel.UserName);
+            var user = await _authUserManager.GetUserByUserNameAsync(loginViewModel.UserName);
 
             if (user == null)
             {
@@ -136,9 +129,7 @@ namespace IdentityServer.Controllers
             }
             */
 
-            //isPersistent - параметр відноситься до Cookie
-            //lockoutOnFailure - параметр відповідає за те, щоб заблокувати акаунт якщо було декілька не вдалих спроб
-            var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, isPersistent: true, false);
+            var result = await _authUserManager.SignInAsync(loginViewModel.UserName, loginViewModel.Password, isPersistent: true, false);
 
             /* Cookie дебаг оутпут
             if (_environment.IsDevelopment())
@@ -233,7 +224,7 @@ namespace IdentityServer.Controllers
                 Log.Debug("Validation [{Register}] Done!", IdentityServerFrontEndConstants.NamePageRegister);
             }
 
-            var unit = _userManager.FindByNameAsync(registerViewModel.UserName).Result;
+            var unit = await _authUserManager.GetUserByUserNameAsync(registerViewModel.UserName);
             if (unit == null)
             {
                 unit = new ApplicationUser
@@ -244,12 +235,12 @@ namespace IdentityServer.Controllers
                     EmailConfirmed = true,
                 };
 
-                var result = _userManager.CreateAsync(unit, registerViewModel.Password).Result;
+                var result = _authUserManager.CreateUserAsync(unit, registerViewModel.Password).Result;
 
                 if (result.Succeeded)
                 {
                     //Робимо вхід цього користувача
-                    await _signInManager.SignInAsync(unit, isPersistent: true);
+                    await _authUserManager.SignInAsync(unit, isPersistent: true);
 
                     return RedirectToAction(
                         IdentityServerFrontEndConstants.NamePageMainPage,                 IdentityServerFrontEndConstants.ControllerNamePages,
@@ -277,7 +268,7 @@ namespace IdentityServer.Controllers
                     return View(IdentityServerFrontEndConstants.NamePageRegister, registerViewModel);
                 }
 
-                result = _userManager.AddClaimsAsync(unit, new Claim[]{
+                result = _authUserManager.AddClaimsAtUserAsync(unit, new Claim[]{
                             new Claim(JwtClaimTypes.Name, $"{registerViewModel.UserName} Smith"),
                             new Claim(JwtClaimTypes.GivenName, registerViewModel.UserName),
                             new Claim(JwtClaimTypes.FamilyName, "Smith"),
@@ -308,7 +299,7 @@ namespace IdentityServer.Controllers
                 Log.Debug("LogOut ID:\t{logOutId}", logOutId);
             }
 
-            await _signInManager.SignOutAsync();
+            await _authUserManager.SignOutUserAsync();
 
             var logOutRequest = await _interactionService.GetLogoutContextAsync(logOutId);
 

@@ -10,7 +10,7 @@ namespace IdentityServer_DAL.MenegmentData
 {
     public class DeleteData
     {
-        public static async void DeleteAllUsersAsync(string connectionString = Constants.ConnectionMySQL)
+        public async void DeleteAllUsersAsync(string connectionString = Constants.ConnectionMySQL)
         {
             var services = new ServiceCollection();
             services.AddLogging();

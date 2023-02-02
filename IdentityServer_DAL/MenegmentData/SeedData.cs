@@ -13,7 +13,7 @@ namespace IdentityServer_DAL.MenegmentData
 {
     public class SeedData
     {
-        public static void EnsureSeedDataAsync(string connectionString = Constants.ConnectionMySQL)
+        public void EnsureSeedDataAsync(string connectionString = Constants.ConnectionMySQL)
         {
             var services = new ServiceCollection();
             services.AddLogging();

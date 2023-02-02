@@ -152,22 +152,6 @@ namespace IdentityServer_Common.Resources
                         IdentityServerConstants.StandardScopes.OpenId,// "openid",
                         IdentityServerConstants.StandardScopes.Profile,//"profile",
                         IdentityServerScopeConstants.ApiScope_Level2 }
-                },
-
-                new Client
-                {
-                    ClientId = "test.client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-
-                    //Області, до яких клієнт має доступ
-                    AllowedScopes = {
-                        IdentityServerScopeConstants.ApiScope_Read,
-                        IdentityServerScopeConstants.ApiScope_Write,
-                        IdentityServerScopeConstants.ApiScope_Delete}
                 }
             };
     }

@@ -6,15 +6,19 @@ namespace IdentityServer.Controllers
 {
     public class MenegmentDataBaseController : Controller
     {
-        public MenegmentDataBaseController()
-        {
+        private readonly DeleteData _delateControll;
+        private readonly SeedData _seedData;
 
+        public MenegmentDataBaseController(DeleteData deleteData, SeedData seedData)
+        {
+            _delateControll = deleteData;
+            _seedData = seedData;
         }
 
         [HttpGet]
         public IActionResult DeleteAllUsers(string returnActionName, string returnControllerName)
         {
-            DeleteData.DeleteAllUsersAsync();
+            _delateControll.DeleteAllUsersAsync();
             SwitchActionReview(deleteAll: true);
 
             return RedirectToAction(actionName: returnActionName, controllerName: returnControllerName);
@@ -23,7 +27,7 @@ namespace IdentityServer.Controllers
         [HttpGet]
         public IActionResult CreateBaseUsers(string returnActionName, string returnControllerName)
         {
-            SeedData.EnsureSeedDataAsync();
+            _seedData.EnsureSeedDataAsync();
             SwitchActionReview(createDefault: true);
 
             return RedirectToAction(actionName: returnActionName, controllerName: returnControllerName);
