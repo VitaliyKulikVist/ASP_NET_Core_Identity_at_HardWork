@@ -1,5 +1,6 @@
 ﻿using IdentityServer.ViewModels;
-using IdentityServer_DAL_MySQL.UserDataControll;
+using IdentityServer_DAL.Entity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -9,11 +10,14 @@ namespace IdentityServer.Controllers
 {
     public class PagesController : Controller
     {
-        private readonly AuthUserManager _userManager;
+
+        private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly IHostEnvironment _environment;
 
-        public PagesController (AuthUserManager userManager, IHostEnvironment environment)
+        public PagesController (
+            UserManager<ApplicationUser> userManager,
+            IHostEnvironment environment)
         {
             _userManager = userManager;
             _environment = environment;
@@ -34,7 +38,7 @@ namespace IdentityServer.Controllers
 
             if(mainPageViewModel != null && !string.IsNullOrWhiteSpace(mainPageViewModel.UserName))//Заглушка, потім забрати
             {
-                var user = await _userManager.GetUserByUserNameAsync(mainPageViewModel.UserName);
+                var user = await _userManager.FindByNameAsync(mainPageViewModel.UserName);
                 if (user == null)
                 {
                     if (_environment.IsDevelopment())

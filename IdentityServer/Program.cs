@@ -19,6 +19,7 @@ namespace IdentityServer
                 Log.Information("Початок роботи Хоста IdentityServer...");
 
                 AdditionalClasses.OpenBrowser("https://localhost:5001/.well-known/openid-configuration");
+                AdditionalClasses.OpenBrowser("https://localhost:5001/Auth/Login");
 
                 host.Run();
 

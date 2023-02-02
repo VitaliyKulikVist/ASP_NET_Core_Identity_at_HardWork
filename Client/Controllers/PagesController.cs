@@ -68,8 +68,8 @@ namespace Client.Controllers
                 HaveAcces = accesIs,
             };
 
-            //return RedirectToAction(FrontEndConstants.NamePageTakeAcces, FrontEndConstants.ControllerTakeAcces, viewModel);
-            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, viewModel);
+            return RedirectToAction(actionName: "TakeAccesGrantTypesClientCredentials", controllerName: "Pages", viewModel);
+            //return View(IdentityServerFrontEndConstants.NamePageTakeAcces, viewModel);
         }
 
         [HttpPost]
@@ -87,42 +87,6 @@ namespace Client.Controllers
             }
 
             _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async("client", "secret");
-
-            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
-        }
-
-        //Кнопка 2
-        [HttpGet]
-        public IActionResult TakeAccesGrantTypesCode(bool accesIs)
-        {
-            if (_environment.IsDevelopment())
-            {
-                Log.Debug("Try Take Acces GrantTypes.Code [Get]");
-            }
-
-            var viewModel = new TakeAccesViewModels()
-            {
-                HaveAcces = accesIs,
-            };
-
-            return View(IdentityServerFrontEndConstants.NamePageTakeAcces, viewModel);
-        }
-
-        [HttpPost]
-        public IActionResult TakeAccesGrantTypesCode(TakeAccesViewModels takeAccesViewModels)
-        {
-            if (_environment.IsDevelopment())
-            {
-                Log.Debug("Try Take Acces GrantTypes.Code [Post] acces is = {ass}",
-                    takeAccesViewModels.HaveAcces);
-            }
-
-            _ = SendRequestAtIdentityServerAtTryGetAccesFromApi1Async("redirectClient", "secret");
-
-            if (!takeAccesViewModels.HaveAcces)
-            {
-                return RedirectToAction(IdentityServerFrontEndConstants.NamePageLogin, IdentityServerFrontEndConstants.ControllerNameAuth, "https://localhost:6216/Pages/TakeAcces");
-            }
 
             return View(IdentityServerFrontEndConstants.NamePageTakeAcces, takeAccesViewModels);
         }

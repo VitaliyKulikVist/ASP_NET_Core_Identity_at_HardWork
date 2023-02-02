@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using IdentityServer.Extension;
 using IdentityServer_Common.Constants;
 using IdentityServer_Common.Extensions;
 using IdentityServer_Common.Resources;
@@ -36,6 +37,8 @@ namespace IdentityServer
                 // Якщо нема ? не буде рахувати помилкою
                 conf.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             });
+
+            services.RegistrationDI();
 
             services.AddValidatorsFromAssemblyContaining<LoginViewModel>();
             services.AddValidation();

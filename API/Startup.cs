@@ -176,6 +176,11 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapGet("/Hello", async context =>
+                {
+                    await context.Response.WriteAsync("Hello Vitaliy it`s API");
+                });
             });
         }
     }

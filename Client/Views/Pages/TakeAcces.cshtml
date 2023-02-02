@@ -30,11 +30,11 @@
     @if (!Model.HaveAcces)
     {
         <div class="block">
-            <a asp-controller="Pages" asp-action="TakeAccesGrantTypesClientCredentials" asp-route-accesIs="@Model.HaveAcces" metod="get">
+            <form asp-controller="Pages" asp-action="TakeAccesGrantTypesClientCredentials" metod="post">
                 <button type="submit" class="button">
                     GrantTypes ClientCredentials
                 </button>
-            </a>
+            </form>
         </div>
     }
 </footer>

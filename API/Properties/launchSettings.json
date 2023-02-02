@@ -3,7 +3,7 @@
     "API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:7249/Hello",
+      "launchUrl": "http://localhost:7249/Hello",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
