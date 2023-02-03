@@ -11,15 +11,14 @@ namespace IdentityServer
         public static int Main(string[] args)
         {
             AdditionalClasses.AddAndConfiguredLogger();
+            //AdditionalClasses.OpenBrowser("https://localhost:5001/Hello");
+            //AdditionalClasses.OpenBrowser("https://localhost:5001/Auth/Login");
 
             try
             {
                 var host = CreateHostBuilder(args).Build();
 
                 Log.Information("Початок роботи Хоста IdentityServer...");
-
-                AdditionalClasses.OpenBrowser("https://localhost:5001/.well-known/openid-configuration");
-                AdditionalClasses.OpenBrowser("https://localhost:5001/Auth/Login");
 
                 host.Run();
 

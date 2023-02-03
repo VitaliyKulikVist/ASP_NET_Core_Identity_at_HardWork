@@ -122,7 +122,8 @@ namespace IdentityServer_Common.Resources
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedScopes = { IdentityServerScopeConstants.ApiScope_Level1 },
-                    AllowedCorsOrigins = { "https://localhost:7249" },
+                    //They contein IP adressa API
+                    AllowedCorsOrigins = { "http://localhost:7249", "https://localhost:6249" },
                 },
 
                 new Client
@@ -139,7 +140,7 @@ namespace IdentityServer_Common.Resources
                     //Перенаправлення після автентифікації клієнтського застосунку
                     RedirectUris = { "https://localhost:44300/signin-oidc", "https://oauth.pstmn.io/v1/callback" },
                     //Набір адрес яким дозволено використовувати IdentityServer(іншими словами набір арі)
-                    AllowedCorsOrigins = { "https://localhost:7249" },
+                    AllowedCorsOrigins = { "http://localhost:7249", "https://localhost:6249" },
                     //Адреса куди відбувається перенаправлення після виходу з клієнтського застосунку
                     //PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
                     PostLogoutRedirectUris = { "https://localhost:44300/Auth/Login" },

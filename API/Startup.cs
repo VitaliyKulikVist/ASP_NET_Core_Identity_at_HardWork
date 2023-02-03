@@ -1,5 +1,4 @@
-﻿//using IdentityServer_Common.Constants;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Text.Json.Serialization;
 
 namespace API
 {
@@ -25,7 +25,11 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions( options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(opt => 
@@ -61,12 +65,11 @@ namespace API
                 });
             });
 
-            //* Працює, всее добре просто зміню на авторизацію лог пас
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer( options =>
                 {
                     options.Authority = "https://localhost:5001";
-                    
+
                     /* Для контролю отримання токена
                     options.Events = new JwtBearerEvents
                     {
@@ -119,56 +122,37 @@ namespace API
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false,
-                        NameClaimType = "TestNameCliaim",
-                        RoleClaimType = "TestRole"
+                        NameClaimType = "Identity_Server_Cliaims",
+                        RoleClaimType = "Identiti_Server_Role"
                     };
                     options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
                 });
 
-            ///////////////////////////////////код повязаний з авторизацією через логін пароль//////////////////////////
-            //services.AddAuthentication(conf =>
+            //services.AddAuthorization(options =>
             //{
-            //    conf.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    conf.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, option =>
+            //    options.AddPolicy("ApiScope", policy =>
             //    {
-            //        option.Authority = "https://localhost:5001";
-            //        option.RequireHttpsMetadata = false;
-
-            //        //option.Audience = IdentityServerScopeConstants.ApiScope_Level1;
+            //        policy.RequireClaim("scope", IdentityServerScopeConstants.ApiScope_Level1);
             //    });
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ApiScope", policy =>
-                {
-                    policy.RequireClaim("scope", "Acces1Level");
-                });
-            });
-
-            //* Налаштувати роботу Cookie
-            services.ConfigureApplicationCookie(config =>
-            {
-                config.Cookie.Name = "Identity.Test_Cookie_Name";
-                config.LoginPath = new PathString("/Auth/Login");
-                config.LogoutPath = new PathString("/Auth/Logout");
-            });
-            //*/
+            //});
         }
 
         public void Configure(IApplicationBuilder app)
         {
             if (Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwagger(c =>
+                {
+                    c.RouteTemplate = "api/app/swagger/{documentName}/swagger.json";
+                });
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint($"/api/app/swagger/v1/swagger.json", $"APP API - v1");
+                    c.RoutePrefix = "api/app/swagger";
+                });
             }
 
             app.UseRouting();
-
-            //app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();

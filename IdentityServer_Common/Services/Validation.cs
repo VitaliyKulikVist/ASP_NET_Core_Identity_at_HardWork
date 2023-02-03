@@ -1,4 +1,5 @@
 ﻿using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using IdentityServer_Common.Infrastructure.Interface;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace IdentityServer_Common.Services
             _logger = logger;
         }
 
-        public async Task ValidateAsync<TModel>(TModel model, ModelStateDictionary modelStateDictionary)
+        public async Task<ValidationResult> ValidateAsync<TModel>(TModel model, ModelStateDictionary modelStateDictionary)
         {
             if (modelStateDictionary == null)
             {
@@ -43,6 +44,8 @@ namespace IdentityServer_Common.Services
                     }
                 }
             }
+
+            return validationResult;
         }
     }
 }

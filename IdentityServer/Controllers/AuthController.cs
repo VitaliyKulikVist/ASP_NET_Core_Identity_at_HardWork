@@ -13,6 +13,9 @@ using System;
 using IdentityServer_Common.Constants;
 using IdentityServer.ViewModels;
 using IdentityServer_FrontEnd_Common.Entity.ViewModel.Auth;
+using FluentValidation.Results;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace IdentityServer.Controllers
 {
@@ -88,11 +91,11 @@ namespace IdentityServer.Controllers
                     string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl) ? "Empty": loginViewModel.ReturnUrl);
             }
 
-            await _validation.ValidateAsync(loginViewModel, ModelState);
+            var result = await _validation.ValidateAsync(loginViewModel, ModelState);
 
             if (!ModelState.IsValid)
             {
-                SaveValidateInformationAtDynamic();
+                SaveValidateInformationAtDynamic(result: result);
 
                 return View(IdentityServerFrontEndConstants.NamePageLogin, loginViewModel);
             }
@@ -320,35 +323,54 @@ namespace IdentityServer.Controllers
             return Redirect(logOutRequest.PostLogoutRedirectUri);
         }
 
-        private void SaveValidateInformationAtDynamic(IdentityResult result = null!)
+        private void SaveValidateInformationAtDynamic(ValidationResult result, IdentityResult identityResult = null!)
         {
+            if (result.IsValid)
+            {
+                return;
+            }
+
+            var listUserNameErrors = new List<ModelError>();
+            var listPassworndErrors = new List<ModelError>();
+            var listConfirmPasswordErrors = new List<ModelError>();
+
+
             ErrorViewModel errorModel = new ErrorViewModel();
 
+
             var errors = ModelState.Values.SelectMany(s => s.Errors);
-            var userNameTemp = errors.Where(s => s.ErrorMessage.Contains("User Name"));
-            if (userNameTemp != null && userNameTemp.Count() > 0)
+
+            foreach (var error in errors)
             {
-                errorModel.UserNameErrors = userNameTemp;
+                if (error.ErrorMessage.Contains("User Name"))
+                {
+                    listUserNameErrors.Add(error);
+                }
+
+                else if (error.ErrorMessage.Contains("Password") 
+                    && !error.ErrorMessage.Contains("Confirm"))
+                {
+                    listPassworndErrors.Add(error);
+                }
+
+                else if (error.ErrorMessage.Contains("Confirm Password"))
+                {
+                    listConfirmPasswordErrors.Add(error);
+                }
             }
 
-            var passwordTemp = errors.Where(s => s.ErrorMessage.Contains("Password") && !s.ErrorMessage.Contains("Confirm"));
-            if (passwordTemp != null) 
+            if (identityResult != null)
             {
-                errorModel.PasswordErrors = passwordTemp;
+                errorModel.IdentityError = identityResult.Errors;
             }
 
-            var confirmPasswordTemp = errors.Where(s => s.ErrorMessage.Contains("Confirm Password"));
-            if (confirmPasswordTemp != null) 
+            ViewBag.ErrorModel = new ErrorViewModel
             {
-                errorModel.ConfirmPasswordErrors = confirmPasswordTemp;
-            }
-
-            if (result != null)
-            {
-                errorModel.IdentityError = result.Errors;
-            }
-
-            ViewBag.ErrorModel = errorModel;
+                UserNameErrors = listUserNameErrors,
+                PasswordErrors = listPassworndErrors,
+                ConfirmPasswordErrors = listConfirmPasswordErrors,
+                IdentityError = identityResult?.Errors,
+            };
         }
     }
 }

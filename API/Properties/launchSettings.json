@@ -3,7 +3,7 @@
     "API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:7249/Hello",
+      "launchUrl": "http://localhost:7249/api/app/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
