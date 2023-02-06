@@ -25,9 +25,15 @@ namespace API.Controllers
                 Value_Claim =  s.Value
             });
 
-            var ss = res.First(s => s.Value_Claim == "asdas");
+            if (res != null && res.Count() > 0)
+            {
+                return Ok(res);
+            }
 
-            return new JsonResult(res);
+            else
+            {
+                return BadRequest("Not found ant Claims");
+            }
         }
 
         [HttpGet]
@@ -44,7 +50,7 @@ namespace API.Controllers
             
             if (sortClaims != null && sortClaims.Count() > 0)
             {
-                return Ok(sortClaims);// new JsonResult(sortClaims);
+                return Ok(sortClaims);
             }
 
             return NotFound($"{type} claim does not exist");

@@ -139,7 +139,7 @@ namespace IdentityServer.Controllers
             }
             */
 
-            var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password,isPersistent: true, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password,isPersistent: false, lockoutOnFailure: false);
 
             /* Cookie дебаг оутпут
             if (_environment.IsDevelopment())
@@ -255,8 +255,6 @@ namespace IdentityServer.Controllers
                     return RedirectToAction(
                         IdentityServerFrontEndConstants.NamePageMainPage,                 IdentityServerFrontEndConstants.ControllerNamePages,
                         new MainPageViewModel().GetMainPage(registerViewModel));
-
-                    //return Redirect(registerViewModel.ReturnUrl!);
                 }
 
                 else
@@ -278,12 +276,13 @@ namespace IdentityServer.Controllers
                     return View(IdentityServerFrontEndConstants.NamePageRegister, registerViewModel);
                 }
 
-                result = _userManager.AddClaimsAsync(unit, new Claim[]{
+                result = _userManager.AddClaimsAsync(unit, new Claim[]
+                {
                             new Claim(JwtClaimTypes.Name, $"{registerViewModel.UserName} Smith"),
                             new Claim(JwtClaimTypes.GivenName, registerViewModel.UserName),
                             new Claim(JwtClaimTypes.FamilyName, "Smith"),
                             new Claim(JwtClaimTypes.WebSite, $"http://{registerViewModel.UserName}.com"),
-                        }).Result;
+                }).Result;
 
                 if (!result.Succeeded)
                 {
