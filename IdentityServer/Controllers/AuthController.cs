@@ -91,11 +91,11 @@ namespace IdentityServer.Controllers
                     string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl) ? "Empty": loginViewModel.ReturnUrl);
             }
 
-            var result = await _validation.ValidateAsync(loginViewModel, ModelState);
+            var resultValidation = await _validation.ValidateAsync(loginViewModel, ModelState);
 
             if (!ModelState.IsValid)
             {
-                SaveValidateInformationAtDynamic(result: result);
+                SaveValidateInformationAtDynamic(validationResult: resultValidation);
 
                 return View(IdentityServerFrontEndConstants.NamePageLogin, loginViewModel);
             }
@@ -272,7 +272,7 @@ namespace IdentityServer.Controllers
 
                     if (result.Errors.Count() > 0)
                     {
-                        SaveValidateInformationAtDynamic(result);
+                        SaveValidateInformationAtDynamic(identityResult: result);
                     }
 
                     return View(IdentityServerFrontEndConstants.NamePageRegister, registerViewModel);
@@ -323,41 +323,42 @@ namespace IdentityServer.Controllers
             return Redirect(logOutRequest.PostLogoutRedirectUri);
         }
 
-        private void SaveValidateInformationAtDynamic(ValidationResult result, IdentityResult identityResult = null!)
+        private void SaveValidateInformationAtDynamic(ValidationResult validationResult = null!, IdentityResult identityResult = null!)
         {
-            if (result.IsValid)
-            {
-                return;
-            }
-
             var listUserNameErrors = new List<ModelError>();
             var listPassworndErrors = new List<ModelError>();
             var listConfirmPasswordErrors = new List<ModelError>();
+            var errorModel = new ErrorViewModel();
 
-
-            ErrorViewModel errorModel = new ErrorViewModel();
-
-
-            var errors = ModelState.Values.SelectMany(s => s.Errors);
-
-            foreach (var error in errors)
+            if (validationResult != null)
             {
-                if (error.ErrorMessage.Contains("User Name"))
+                if (validationResult.IsValid)
                 {
-                    listUserNameErrors.Add(error);
+                    return;
                 }
 
-                else if (error.ErrorMessage.Contains("Password") 
-                    && !error.ErrorMessage.Contains("Confirm"))
-                {
-                    listPassworndErrors.Add(error);
-                }
+                var errors = ModelState.Values.SelectMany(s => s.Errors);
 
-                else if (error.ErrorMessage.Contains("Confirm Password"))
+                foreach (var error in errors)
                 {
-                    listConfirmPasswordErrors.Add(error);
+                    if (error.ErrorMessage.Contains("User Name"))
+                    {
+                        listUserNameErrors.Add(error);
+                    }
+
+                    else if (error.ErrorMessage.Contains("Password")
+                        && !error.ErrorMessage.Contains("Confirm"))
+                    {
+                        listPassworndErrors.Add(error);
+                    }
+
+                    else if (error.ErrorMessage.Contains("Confirm Password"))
+                    {
+                        listConfirmPasswordErrors.Add(error);
+                    }
                 }
             }
+            
 
             if (identityResult != null)
             {
